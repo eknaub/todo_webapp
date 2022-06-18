@@ -1,12 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:todo_webapp/model/TodoTaskItem.dart';
 import 'package:todo_webapp/responsive.dart';
+import 'package:todo_webapp/widgets/drawer_widget.dart';
 
-import '../widgets/drawer_widget.dart';
-
-class LandingScreen extends StatelessWidget {
+class LandingScreen extends StatefulWidget {
   const LandingScreen({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<LandingScreen> createState() => _LandingScreenState();
+}
+
+class _LandingScreenState extends State<LandingScreen> {
+  late TextEditingController _taskDescriptionController;
+  late TextEditingController _taskStepsController;
+  List<Widget> items = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _taskDescriptionController = TextEditingController();
+    _taskStepsController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _taskDescriptionController.dispose();
+    _taskStepsController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +47,14 @@ class LandingScreen extends StatelessWidget {
           children: [
             Responsive.isDesktop(context) ? const DrawerWidget() : Container(),
             Expanded(
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Row(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Row(
                       children: [
                         const Text(
-                          "All tasks",
+                          "activityName",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 16.0,
@@ -41,7 +64,92 @@ class LandingScreen extends StatelessWidget {
                           width: 25.0,
                         ),
                         ElevatedButton.icon(
-                          onPressed: () {},
+                          onPressed: () => showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text('Add task'),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TextField(
+                                    decoration: const InputDecoration(
+                                      border: UnderlineInputBorder(),
+                                      hintText: 'Enter task description',
+                                    ),
+                                    controller: _taskDescriptionController,
+                                  ),
+                                  TextField(
+                                    decoration: const InputDecoration(
+                                      border: UnderlineInputBorder(),
+                                      hintText: 'Enter number of steps',
+                                    ),
+                                    controller: _taskStepsController,
+                                  ),
+                                ],
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, ''),
+                                  child: const Text('Cancel'),
+                                ),
+                                ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.blueGrey[700])),
+                                  onPressed: () {
+                                    Navigator.pop(context,
+                                        _taskDescriptionController.text);
+                                  },
+                                  child: const Text('Add'),
+                                ),
+                              ],
+                            ),
+                          ).then(
+                            (value) {
+                              if (value != null && value.isNotEmpty) {
+                                if (_taskStepsController.text.isNotEmpty &&
+                                    _taskDescriptionController
+                                        .text.isNotEmpty) {
+                                  int? num =
+                                      int.tryParse(_taskStepsController.text);
+                                  if (num != null) {
+                                    items.add(TodoTaskItem(
+                                      taskDescription:
+                                          _taskDescriptionController.text,
+                                      taskSteps: num,
+                                      onTaskChanged: () {},
+                                    ));
+                                  } else {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          AlertDialog(
+                                        title: const Text('Add task'),
+                                        content: const Text(
+                                            'Adding task failed, steps input must be numeric.'),
+                                        actions: <Widget>[
+                                          ElevatedButton(
+                                            style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        Colors.red)),
+                                            onPressed: () {
+                                              Navigator.pop(context, 'Ok');
+                                            },
+                                            child: const Text('Ok'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }
+                                }
+                              }
+                              _taskDescriptionController.text = '';
+                              _taskStepsController.text = '';
+                              setState(() {});
+                            },
+                          ),
                           style: ElevatedButton.styleFrom(
                               primary: Colors.blueGrey),
                           label: const Text(
@@ -60,73 +168,20 @@ class LandingScreen extends StatelessWidget {
                           label: const Text(
                             "Reset all",
                           ),
-                        )
+                        ),
                       ],
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.all(8.0),
-                    padding: const EdgeInsets.all(6.0),
-                    decoration:
-                        BoxDecoration(border: Border.all(color: Colors.black)),
-                    child: Row(
-                      children: [
-                        IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.remove,
-                              color: Colors.white,
-                            )),
-                        Column(
-                          children: const [
-                            CircularProgressIndicator(
-                              value: 0.7,
-                              backgroundColor: Colors.blueGrey,
-                              color: Colors.green,
-                            ),
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            Text(
-                              "4/5",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12.0,
-                              ),
-                            )
-                          ],
-                        ),
-                        IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.add,
-                              color: Colors.white,
-                            )),
-                        const Spacer(),
-                        const Text(
-                          "Description",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14.0,
-                          ),
-                        ),
-                        const Spacer(),
-                        const Text(
-                          "Tags",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14.0,
-                          ),
-                        ),
-                        const Spacer(),
-                        IconButton(
-                            onPressed: () {},
-                            icon:
-                                const Icon(Icons.delete, color: Colors.white)),
-                      ],
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: items.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          child: items[index],
+                        );
+                      },
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

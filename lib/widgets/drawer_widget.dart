@@ -1,9 +1,40 @@
 import 'package:flutter/material.dart';
 
-class DrawerWidget extends StatelessWidget {
+import '../model/listTileItem.dart';
+
+class DrawerWidget extends StatefulWidget {
   const DrawerWidget({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<DrawerWidget> createState() => _DrawerWidgetState();
+}
+
+class _DrawerWidgetState extends State<DrawerWidget> {
+  late TextEditingController _controller;
+  List<Widget> items = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+
+    items.add(ActivityListItem(
+      name: 'Game',
+      onActivityChanged: () {},
+    ));
+    items.add(ActivityListItem(
+      name: 'Sport',
+      onActivityChanged: () {},
+    ));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +52,43 @@ class DrawerWidget extends StatelessWidget {
                     Icons.add,
                     color: Colors.white,
                   ),
-                  onPressed: () {},
+                  onPressed: () => showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text('Add activity'),
+                      content: TextField(
+                        decoration: const InputDecoration(
+                          border: UnderlineInputBorder(),
+                          hintText: 'Enter a new activity',
+                        ),
+                        controller: _controller,
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, ''),
+                          child: const Text('Cancel'),
+                        ),
+                        ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  Colors.blueGrey[700])),
+                          onPressed: () {
+                            Navigator.pop(context, _controller.text);
+                          },
+                          child: const Text('Add'),
+                        ),
+                      ],
+                    ),
+                  ).then((value) {
+                    if (value != null && value.isNotEmpty) {
+                      items.add(ActivityListItem(
+                        name: _controller.text,
+                        onActivityChanged: () {},
+                      ));
+                    }
+                    _controller.text = '';
+                    setState(() {});
+                  }),
                 ),
               ),
               const Text(
@@ -49,26 +116,13 @@ class DrawerWidget extends StatelessWidget {
                   color: Colors.white),
             ),
           ),
-          ListTile(
-            title: const Text('Game',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  color: Colors.white,
-                )),
-            onTap: () {
-              // Update the state of the app.
-              // ...
-            },
-          ),
-          ListTile(
-            title: const Text('Sport',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  color: Colors.white,
-                )),
-            onTap: () {
-              // Update the state of the app.
-              // ...
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: items.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                child: items[index],
+              );
             },
           ),
           const Divider(
