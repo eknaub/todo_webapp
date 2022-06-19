@@ -130,6 +130,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             indent: 16.0,
             endIndent: 16.0,
           ),
+          ListTile(
+              onTap: () {},
+              title: const Text("Notes",
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.white,
+                  ))),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [

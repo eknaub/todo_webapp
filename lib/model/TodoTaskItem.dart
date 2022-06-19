@@ -18,12 +18,17 @@ class TodoTaskItem extends StatefulWidget {
 class _TodoTaskItemState extends State<TodoTaskItem> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          margin: const EdgeInsets.all(8.0),
+    return Container(
+      margin: const EdgeInsets.all(6.0),
+      child: InkWell(
+        onTap: () => {},
+        hoverColor: Colors.blueGrey[700],
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        mouseCursor: MouseCursor.defer,
+        child: Container(
           padding: const EdgeInsets.all(6.0),
-          decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+          decoration: BoxDecoration(border: Border.all(color: Colors.black87)),
           child: Row(
             children: [
               IconButton(
@@ -32,24 +37,29 @@ class _TodoTaskItemState extends State<TodoTaskItem> {
                     Icons.remove,
                     color: Colors.white,
                   )),
-              Column(
-                children: [
-                  const CircularProgressIndicator(
-                    value: 0.7,
-                    backgroundColor: Colors.blueGrey,
-                    color: Colors.green,
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  Text(
-                    "0/${widget.taskSteps}",
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12.0,
+              SizedBox(
+                width: 50,
+                height: 50,
+                child: Stack(
+                  children: [
+                    const Center(
+                      child: CircularProgressIndicator(
+                        value: 0.7,
+                        backgroundColor: Colors.blueGrey,
+                        color: Colors.green,
+                      ),
                     ),
-                  )
-                ],
+                    Center(
+                      child: Text(
+                        "0/${widget.taskSteps}",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12.0,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
               IconButton(
                   onPressed: () {},
@@ -66,21 +76,13 @@ class _TodoTaskItemState extends State<TodoTaskItem> {
                 ),
               ),
               const Spacer(),
-              const Text(
-                "Tags",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.0,
-                ),
-              ),
-              const Spacer(),
               IconButton(
                   onPressed: () {},
                   icon: const Icon(Icons.delete, color: Colors.white)),
             ],
           ),
         ),
-      ],
+      ),
     );
   }
 }
