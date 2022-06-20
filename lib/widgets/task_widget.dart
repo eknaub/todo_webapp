@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_webapp/model/TodoTaskItem.dart';
 import 'package:todo_webapp/model/selectedIndex.dart';
+import 'package:todo_webapp/model/todoTaskItem.dart';
 import 'package:todo_webapp/shared_prefs/prefs.dart';
 
 class TaskWidget extends StatefulWidget {
@@ -14,8 +14,9 @@ class TaskWidget extends StatefulWidget {
 class _TaskWidgetState extends State<TaskWidget> {
   late TextEditingController _taskDescriptionController;
   late TextEditingController _taskStepsController;
-  late List<Widget> items = [];
-  late SelectedActivity idx;
+  late SelectedActivity activityIdx;
+  List<Widget> items = [];
+  List<dynamic> data = [];
 
   @override
   void initState() {
@@ -31,21 +32,32 @@ class _TaskWidgetState extends State<TaskWidget> {
     super.dispose();
   }
 
-  String _getCurrentActivityName(int idx) {
-    late List<String>? items;
-    items = sharedPrefs.instance.getStringList('activities');
-    return items![idx];
+  void _buildItems() {
+    items.clear();
+    for (var task in data) {
+      items.add(TodoTaskItem(
+          taskIdx: task[0],
+          taskSteps: task[1],
+          taskCurrentSteps: task[1],
+          taskDescription: task[3],
+          onRemove: () {
+            setState(() {});
+          }));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    idx = Provider.of<SelectedActivity>(context);
+    activityIdx = Provider.of<SelectedActivity>(context);
+    data = sharedPrefs.getTasksForActivity(activityIdx.selectedActivityIdx);
+    _buildItems();
     return Column(
       children: [
         Row(
           children: [
             Text(
-              _getCurrentActivityName(idx.selectedIndex),
+              sharedPrefs
+                  .getCurrentActivityName(activityIdx.selectedActivityIdx),
               style: const TextStyle(
                   color: Colors.white,
                   fontSize: 16.0,
@@ -55,6 +67,11 @@ class _TaskWidgetState extends State<TaskWidget> {
               width: 25.0,
             ),
             ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(primary: Colors.blueGrey),
+              label: const Text(
+                "New task",
+              ),
+              icon: const Icon(Icons.add),
               onPressed: () => showDialog<String>(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
@@ -102,10 +119,19 @@ class _TaskWidgetState extends State<TaskWidget> {
                       int? num = int.tryParse(_taskStepsController.text);
                       if (num != null) {
                         items.add(TodoTaskItem(
-                          taskDescription: _taskDescriptionController.text,
-                          taskSteps: num,
-                          onTaskChanged: () {},
-                        ));
+                            taskIdx: data.length,
+                            taskDescription: _taskDescriptionController.text,
+                            taskSteps: num,
+                            taskCurrentSteps: num,
+                            onRemove: () {
+                              setState(() {});
+                            }));
+                        sharedPrefs.addTaskToActivity(
+                            taskIdx: data.length,
+                            activityIdx: activityIdx.selectedActivityIdx,
+                            description: _taskDescriptionController.text,
+                            steps: num,
+                            currSteps: num);
                       } else {
                         showDialog(
                           context: context,
@@ -134,11 +160,6 @@ class _TaskWidgetState extends State<TaskWidget> {
                   setState(() {});
                 },
               ),
-              style: ElevatedButton.styleFrom(primary: Colors.blueGrey),
-              label: const Text(
-                "New task",
-              ),
-              icon: const Icon(Icons.add),
             ),
             const SizedBox(
               width: 25.0,
@@ -148,8 +169,47 @@ class _TaskWidgetState extends State<TaskWidget> {
               style: ElevatedButton.styleFrom(primary: Colors.blueGrey),
               icon: const Icon(Icons.refresh),
               label: const Text(
-                "Reset all",
+                "Reset all tasks",
               ),
+            ),
+            const SizedBox(
+              width: 25.0,
+            ),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(primary: Colors.blueGrey),
+              icon: const Icon(Icons.delete),
+              label: const Text(
+                "Remove all tasks",
+              ),
+              onPressed: () => showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: const Text('Remove all tasks'),
+                  content:
+                      const Text('Are you sure you want to remove all tasks?'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, ''),
+                      child: const Text('Cancel'),
+                    ),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.red)),
+                      onPressed: () {
+                        Navigator.pop(context, 'Remove');
+                      },
+                      child: const Text('Remove'),
+                    ),
+                  ],
+                ),
+              ).then((value) {
+                if (value == 'Remove') {
+                  sharedPrefs.removeAllTasksFromActivity(
+                      activityIdx: activityIdx.selectedActivityIdx);
+                  setState(() {});
+                }
+              }),
             ),
           ],
         ),

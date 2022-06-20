@@ -35,7 +35,8 @@ class _MainScreenState extends State<MainScreen> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: idx.selectedIndex == -1 ? Container() : TaskWidget(),
+                child:
+                    idx.selectedActivityIdx == -1 ? Container() : TaskWidget(),
               ),
             ),
           ],

@@ -16,14 +16,13 @@ class DrawerWidget extends StatefulWidget {
 class _DrawerWidgetState extends State<DrawerWidget> {
   late TextEditingController _controller;
   late List<String>? activityItems;
-  late SelectedActivity idx;
+  late SelectedActivity activityIdx;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
-    activityItems = sharedPrefs.instance.getStringList('activities');
-    activityItems ??= [];
+    activityItems = sharedPrefs.getAllActivityNames();
   }
 
   @override
@@ -34,7 +33,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    idx = Provider.of<SelectedActivity>(context);
+    activityIdx = Provider.of<SelectedActivity>(context);
     return Drawer(
       backgroundColor: Colors.blueGrey[700],
       child: ListView(
@@ -79,9 +78,31 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   ).then((value) {
                     if (value != null && value.isNotEmpty) {
                       if (activityItems != null) {
-                        activityItems!.add(_controller.text);
-                        sharedPrefs.instance
-                            .setStringList('activities', activityItems!);
+                        if (activityItems!.contains(_controller.text)) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text('Add activity'),
+                              content: const Text(
+                                  'Adding activity failed, activity already exists.'),
+                              actions: <Widget>[
+                                ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.red)),
+                                  onPressed: () {
+                                    Navigator.pop(context, 'Ok');
+                                  },
+                                  child: const Text('Ok'),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          activityItems!.add(_controller.text);
+                          sharedPrefs.addActivity(_controller.text);
+                        }
                       }
                     }
                     _controller.text = '';
@@ -150,19 +171,20 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         ).then((value) {
                           if (value == 'Remove') {
                             if (activityItems != null) {
+                              sharedPrefs.removeActivity(activityItems![index]);
                               activityItems!.remove(activityItems![index]);
-                              sharedPrefs.instance
-                                  .setStringList('activities', activityItems!);
+                              activityIdx.setSelectedIndex(-1);
                               setState(() {});
                             }
                           }
                         }),
                     icon: const Icon(Icons.delete, color: Colors.white)),
-                tileColor:
-                    idx.selectedIndex == index ? Colors.blueGrey[800] : null,
+                tileColor: activityIdx.selectedActivityIdx == index
+                    ? Colors.blueGrey[800]
+                    : null,
                 onTap: () {
                   setState(() {
-                    idx.setSelectedIndex(index);
+                    activityIdx.setSelectedIndex(index);
                   });
                 },
               );
@@ -185,7 +207,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           ListTile(
               onTap: () {
-                idx.setSelectedIndex(-1);
+                activityIdx.setSelectedIndex(-1);
                 setState(() {});
               },
               title: const Text("Notes",
