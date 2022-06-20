@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-
-import '../model/listTileItem.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_webapp/model/selectedIndex.dart';
+import 'package:todo_webapp/shared_prefs/prefs.dart';
+import 'package:todo_webapp/widgets/version.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({
@@ -13,21 +15,15 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget> {
   late TextEditingController _controller;
-  List<Widget> items = [];
+  late List<String>? activityItems;
+  late SelectedActivity idx;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
-
-    items.add(ActivityListItem(
-      name: 'Game',
-      onActivityChanged: () {},
-    ));
-    items.add(ActivityListItem(
-      name: 'Sport',
-      onActivityChanged: () {},
-    ));
+    activityItems = sharedPrefs.instance.getStringList('activities');
+    activityItems ??= [];
   }
 
   @override
@@ -38,6 +34,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    idx = Provider.of<SelectedActivity>(context);
     return Drawer(
       backgroundColor: Colors.blueGrey[700],
       child: ListView(
@@ -81,10 +78,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     ),
                   ).then((value) {
                     if (value != null && value.isNotEmpty) {
-                      items.add(ActivityListItem(
-                        name: _controller.text,
-                        onActivityChanged: () {},
-                      ));
+                      if (activityItems != null) {
+                        activityItems!.add(_controller.text);
+                        sharedPrefs.instance
+                            .setStringList('activities', activityItems!);
+                      }
                     }
                     _controller.text = '';
                     setState(() {});
@@ -118,10 +116,55 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           ListView.builder(
             shrinkWrap: true,
-            itemCount: items.length,
+            itemCount: activityItems?.length,
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                child: items[index],
+              return ListTile(
+                title: Text(activityItems![index],
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.white,
+                    )),
+                trailing: IconButton(
+                    onPressed: () => showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Remove activity'),
+                            content: Text(
+                                'Are you sure you want to remove the activity \'${activityItems![index]}\'.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, ''),
+                                child: const Text('Cancel'),
+                              ),
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all(Colors.red)),
+                                onPressed: () {
+                                  Navigator.pop(context, 'Remove');
+                                },
+                                child: const Text('Remove'),
+                              ),
+                            ],
+                          ),
+                        ).then((value) {
+                          if (value == 'Remove') {
+                            if (activityItems != null) {
+                              activityItems!.remove(activityItems![index]);
+                              sharedPrefs.instance
+                                  .setStringList('activities', activityItems!);
+                              setState(() {});
+                            }
+                          }
+                        }),
+                    icon: const Icon(Icons.delete, color: Colors.white)),
+                tileColor:
+                    idx.selectedIndex == index ? Colors.blueGrey[800] : null,
+                onTap: () {
+                  setState(() {
+                    idx.setSelectedIndex(index);
+                  });
+                },
               );
             },
           ),
@@ -130,26 +173,27 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             indent: 16.0,
             endIndent: 16.0,
           ),
+          const Center(
+            child: Text(
+              'Misc',
+              style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.white),
+            ),
+          ),
           ListTile(
-              onTap: () {},
+              onTap: () {
+                idx.setSelectedIndex(-1);
+                setState(() {});
+              },
               title: const Text("Notes",
                   style: TextStyle(
                     fontSize: 16.0,
                     color: Colors.white,
                   ))),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8.0),
-                child: const Text("Version 0.01",
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      color: Colors.white,
-                    )),
-              ),
-            ],
-          )
+          const Version()
         ],
       ),
     );

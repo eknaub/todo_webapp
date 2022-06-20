@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:todo_webapp/screens/landing_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_webapp/model/selectedIndex.dart';
+import 'package:todo_webapp/screens/main_screen.dart';
+import 'package:todo_webapp/shared_prefs/prefs.dart';
 
-void main() {
+Future<void> main() async {
   runApp(const MyApp());
+  await sharedPrefs.init();
 }
 
 class MyApp extends StatelessWidget {
@@ -10,8 +14,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: LandingScreen(),
+    return ChangeNotifierProvider(
+      create: (_) => SelectedActivity(),
+      child: const MaterialApp(
+        home: MainScreen(),
+      ),
     );
   }
 }
