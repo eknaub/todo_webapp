@@ -13,8 +13,7 @@ class Preferences {
     instance = await SharedPreferences.getInstance();
   }
 
-  List<dynamic> getTasksForActivity({required int activityIdx}) {
-    String activity = getActivityName(activityIdx: activityIdx);
+  List<dynamic> getTasksForActivity({required String activity}) {
     String? tasks = sharedPrefs.instance.getString("${activity}Tasks");
     List<dynamic> taskList = [];
     if (tasks != null) {
@@ -26,12 +25,11 @@ class Preferences {
 
   void addTaskToActivity(
       {required int taskIdx,
-      required int activityIdx,
+      required String activity,
       required String description,
       required int steps,
       required int currSteps}) {
-    String activity = getActivityName(activityIdx: activityIdx);
-    var tasks = getTasksForActivity(activityIdx: activityIdx);
+    var tasks = getTasksForActivity(activity: activity);
     List list = [taskIdx, steps, currSteps, description];
     tasks.add(list);
     final s = jsonEncode(tasks);
@@ -40,10 +38,9 @@ class Preferences {
 
   void incrementProgressOfTask({
     required int taskIdx,
-    required int activityIdx,
+    required String activity,
   }) {
-    String activity = getActivityName(activityIdx: activityIdx);
-    var tasks = getTasksForActivity(activityIdx: activityIdx);
+    var tasks = getTasksForActivity(activity: activity);
     for (var task in tasks) {
       if (task[0] == taskIdx) {
         if (task[1] != task[2]) {
@@ -58,10 +55,9 @@ class Preferences {
 
   void decrementProgressOfTask({
     required int taskIdx,
-    required int activityIdx,
+    required String activity,
   }) {
-    String activity = getActivityName(activityIdx: activityIdx);
-    var tasks = getTasksForActivity(activityIdx: activityIdx);
+    var tasks = getTasksForActivity(activity: activity);
     for (var task in tasks) {
       if (task[0] == taskIdx) {
         if (task[2] > 0) {
@@ -75,9 +71,9 @@ class Preferences {
   }
 
   double getTotalProgressForActivity({
-    required int activityIdx,
+    required String activity,
   }) {
-    var tasks = getTasksForActivity(activityIdx: activityIdx);
+    var tasks = getTasksForActivity(activity: activity);
     double totalProgress = 0.0;
     double currentProgress = 0.0;
     //add to currentProgress only if task is 100% done
@@ -96,10 +92,9 @@ class Preferences {
   }
 
   void resetProgressFromAllTasksForActivity({
-    required int activityIdx,
+    required String activity,
   }) {
-    String activity = getActivityName(activityIdx: activityIdx);
-    var tasks = getTasksForActivity(activityIdx: activityIdx);
+    var tasks = getTasksForActivity(activity: activity);
     for (var task in tasks) {
       task[2] = 0;
     }
@@ -108,9 +103,8 @@ class Preferences {
   }
 
   void removeTaskFromActivity(
-      {required int activityIdx, required int taskIdx}) {
-    String activity = getActivityName(activityIdx: activityIdx);
-    var tasks = getTasksForActivity(activityIdx: activityIdx);
+      {required String activity, required int taskIdx}) {
+    var tasks = getTasksForActivity(activity: activity);
     for (var task in tasks) {
       if (task[0] == taskIdx) {
         tasks.remove(task);
@@ -121,12 +115,8 @@ class Preferences {
     sharedPrefs.instance.setString("${activity}Tasks", s);
   }
 
-  void removeAllTasksFromActivity({required int activityIdx}) {
-    String activity = getActivityName(activityIdx: activityIdx);
-    var tasks = getTasksForActivity(activityIdx: activityIdx);
-    tasks.clear();
-    final s = jsonEncode(tasks);
-    sharedPrefs.instance.setString("${activity}Tasks", s);
+  void removeAllTasksFromActivity({required String activity}) {
+    sharedPrefs.instance.remove("${activity}Tasks");
   }
 
   String getActivityName({required int activityIdx}) {
@@ -142,23 +132,41 @@ class Preferences {
     return items;
   }
 
-  int getActivityNamesLength() {
-    late List<String>? items;
-    items = sharedPrefs.instance.getStringList('activities');
-    items ??= [];
-    return items.length;
-  }
-
   void addActivity({required String activity}) {
     late List<String>? items = getAllActivityNames();
     items?.add(activity);
     sharedPrefs.instance.setStringList('activities', items!);
   }
 
-  void removeActivity({required String activity, required int activityIdx}) {
+  void removeActivity({required String activity}) {
     late List<String>? items = getAllActivityNames();
     items?.remove(activity);
-    removeAllTasksFromActivity(activityIdx: activityIdx);
+    removeAllTasksFromActivity(activity: activity);
     sharedPrefs.instance.setStringList('activities', items!);
+  }
+
+  List<String>? getAllNotes() {
+    late List<String>? notes;
+    notes = sharedPrefs.instance.getStringList('notes');
+    notes ??= [];
+    return notes;
+  }
+
+  void addNote({required String note}) {
+    late List<String>? notes = getAllNotes();
+    notes?.add(note);
+    sharedPrefs.instance.setStringList('notes', notes!);
+  }
+
+  void removeAllNotes() {
+    late List<String>? notes = getAllNotes();
+    notes?.clear();
+    sharedPrefs.instance.setStringList("notes", notes!);
+  }
+
+  void removeNoteFromNotes({required int noteIdx}) {
+    late List<String>? notes = getAllNotes();
+    notes?.removeAt(noteIdx);
+    sharedPrefs.instance.setStringList("notes", notes!);
   }
 }

@@ -31,11 +31,14 @@ class TodoItemWidget extends StatefulWidget {
 
 class _TodoItemWidgetState extends State<TodoItemWidget> {
   late SelectedActivity activityIdx;
-  late double taskProgress;
+  late double taskProgress = 0.0;
+  late String activityName = '';
 
   @override
   Widget build(BuildContext context) {
     activityIdx = Provider.of<SelectedActivity>(context);
+    activityName = sharedPrefs.getActivityName(
+        activityIdx: activityIdx.selectedActivityIdx);
     taskProgress = widget.taskCurrentSteps / widget.taskSteps;
     return Container(
       margin: const EdgeInsets.all(6.0),
@@ -53,8 +56,7 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
               IconButton(
                   onPressed: () {
                     sharedPrefs.decrementProgressOfTask(
-                        activityIdx: activityIdx.selectedActivityIdx,
-                        taskIdx: widget.taskIdx);
+                        activity: activityName, taskIdx: widget.taskIdx);
                     widget.onStateChanged();
                   },
                   icon: const Icon(
@@ -91,8 +93,7 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
               IconButton(
                   onPressed: () {
                     sharedPrefs.incrementProgressOfTask(
-                        activityIdx: activityIdx.selectedActivityIdx,
-                        taskIdx: widget.taskIdx);
+                        activity: activityName, taskIdx: widget.taskIdx);
                     widget.onStateChanged();
                   },
                   icon: const Icon(
@@ -109,7 +110,7 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
               ),
               const Spacer(),
               IconButton(
-                icon: const Icon(Icons.delete, color: Colors.red),
+                icon: const Icon(Icons.delete, color: Colors.white),
                 onPressed: () => _removeActivityDialog(context),
               ),
             ],
@@ -135,8 +136,7 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
                 backgroundColor: MaterialStateProperty.all(Colors.red)),
             onPressed: () {
               sharedPrefs.removeTaskFromActivity(
-                  activityIdx: activityIdx.selectedActivityIdx,
-                  taskIdx: widget.taskIdx);
+                  activity: activityName, taskIdx: widget.taskIdx);
               widget.onStateChanged(); //update state of parent widget
               Navigator.pop(context);
             },

@@ -15,10 +15,11 @@ class _TaskWidgetState extends State<TaskWidget> {
   late TextEditingController _taskDescriptionController;
   late TextEditingController _taskStepsController;
   late SelectedActivity activityIdx;
-  List<Widget> taskItems = [];
-  List<dynamic> activityTaskData = [];
-  double totalTaskProgress = 0;
-  String totalTaskProgressString = '';
+  late List<Widget> taskItems = [];
+  late List<dynamic> activityTaskData = [];
+  late String activityName = '';
+  late double totalTaskProgress = 0;
+  late String totalTaskProgressString = '';
 
   @override
   void initState() {
@@ -51,17 +52,17 @@ class _TaskWidgetState extends State<TaskWidget> {
   @override
   Widget build(BuildContext context) {
     activityIdx = Provider.of<SelectedActivity>(context);
-    activityTaskData = sharedPrefs.getTasksForActivity(
+    activityName = sharedPrefs.getActivityName(
         activityIdx: activityIdx.selectedActivityIdx);
-    totalTaskProgress = sharedPrefs.getTotalProgressForActivity(
-        activityIdx: activityIdx.selectedActivityIdx);
+    activityTaskData = sharedPrefs.getTasksForActivity(activity: activityName);
+    totalTaskProgress =
+        sharedPrefs.getTotalProgressForActivity(activity: activityName);
     totalTaskProgressString = (totalTaskProgress * 100).toStringAsFixed(0);
     _buildTaskItems();
     return Column(
       children: [
         Text(
-          sharedPrefs.getActivityName(
-              activityIdx: activityIdx.selectedActivityIdx),
+          activityName,
           style: const TextStyle(
               color: Colors.white, fontSize: 24.0, fontWeight: FontWeight.bold),
         ),
@@ -158,8 +159,7 @@ class _TaskWidgetState extends State<TaskWidget> {
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red)),
             onPressed: () {
-              sharedPrefs.removeAllTasksFromActivity(
-                  activityIdx: activityIdx.selectedActivityIdx);
+              sharedPrefs.removeAllTasksFromActivity(activity: activityName);
               setState(() {});
               Navigator.pop(context);
             },
@@ -187,7 +187,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                 backgroundColor: MaterialStateProperty.all(Colors.red)),
             onPressed: () {
               sharedPrefs.resetProgressFromAllTasksForActivity(
-                  activityIdx: activityIdx.selectedActivityIdx);
+                  activity: activityName);
               setState(() {});
               Navigator.pop(context);
             },
@@ -247,7 +247,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                         }));
                     sharedPrefs.addTaskToActivity(
                         taskIdx: activityTaskData.length,
-                        activityIdx: activityIdx.selectedActivityIdx,
+                        activity: activityName,
                         description: _taskDescriptionController.text,
                         steps: num,
                         currSteps: 0);

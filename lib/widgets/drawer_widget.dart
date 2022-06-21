@@ -14,20 +14,20 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-  late TextEditingController _controller;
+  late TextEditingController _activityController;
   late List<String>? activityItems;
   late SelectedActivity activityIdx;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
+    _activityController = TextEditingController();
     activityItems = sharedPrefs.getAllActivityNames();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _activityController.dispose();
     super.dispose();
   }
 
@@ -89,7 +89,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     )),
                 trailing: IconButton(
                     onPressed: () => _removeActivityDialog(context, index),
-                    icon: const Icon(Icons.delete, color: Colors.red)),
+                    icon: const Icon(Icons.delete, color: Colors.white)),
                 tileColor: activityIdx.selectedActivityIdx == index
                     ? Colors.blueGrey[800]
                     : null,
@@ -149,9 +149,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 backgroundColor: MaterialStateProperty.all(Colors.red)),
             onPressed: () {
               if (activityItems != null) {
-                sharedPrefs.removeActivity(
-                    activity: activityItems![index],
-                    activityIdx: activityIdx.selectedActivityIdx);
+                sharedPrefs.removeActivity(activity: activityItems![index]);
                 activityItems!.remove(activityItems![index]);
                 activityIdx.setSelectedIndex(-1);
                 setState(() {});
@@ -175,12 +173,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             border: UnderlineInputBorder(),
             hintText: 'Enter a new activity',
           ),
-          controller: _controller,
+          controller: _activityController,
         ),
         actions: <Widget>[
           TextButton(
             onPressed: () => {
-              _controller.text = '',
+              _activityController.text = '',
               Navigator.pop(context),
             },
             child: const Text('Cancel'),
@@ -190,9 +188,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 backgroundColor:
                     MaterialStateProperty.all(Colors.blueGrey[700])),
             onPressed: () {
-              if (_controller.text.isNotEmpty) {
+              if (_activityController.text.isNotEmpty) {
                 if (activityItems != null) {
-                  if (activityItems!.contains(_controller.text)) {
+                  if (activityItems!.contains(_activityController.text)) {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) => AlertDialog(
@@ -213,9 +211,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       ),
                     );
                   } else {
-                    activityItems!.add(_controller.text);
-                    sharedPrefs.addActivity(activity: _controller.text);
-                    _controller.text = '';
+                    activityItems!.add(_activityController.text);
+                    sharedPrefs.addActivity(activity: _activityController.text);
+                    _activityController.text = '';
                     Navigator.pop(context);
                   }
                 }
