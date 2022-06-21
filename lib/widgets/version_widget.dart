@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Version extends StatelessWidget {
-  static const String version = "0.1";
+  static const String version = "0.9";
   const Version({
     Key? key,
   }) : super(key: key);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_webapp/model/selectedIndex.dart';
+import 'package:todo_webapp/model/selectedActivity.dart';
 import 'package:todo_webapp/screens/main_screen.dart';
 import 'package:todo_webapp/shared_prefs/prefs.dart';
 

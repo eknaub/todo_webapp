@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_webapp/model/selectedIndex.dart';
+import 'package:todo_webapp/model/selectedActivity.dart';
 import 'package:todo_webapp/shared_prefs/prefs.dart';
-import 'package:todo_webapp/widgets/version.dart';
+import 'package:todo_webapp/widgets/version_widget.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({
@@ -35,6 +35,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   Widget build(BuildContext context) {
     activityIdx = Provider.of<SelectedActivity>(context);
     return Drawer(
+      width: 250.0,
       backgroundColor: Colors.blueGrey[700],
       child: ListView(
         padding: EdgeInsets.zero,
@@ -101,7 +102,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           );
                         } else {
                           activityItems!.add(_controller.text);
-                          sharedPrefs.addActivity(_controller.text);
+                          sharedPrefs.addActivity(activity: _controller.text);
                         }
                       }
                     }
@@ -171,7 +172,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         ).then((value) {
                           if (value == 'Remove') {
                             if (activityItems != null) {
-                              sharedPrefs.removeActivity(activityItems![index]);
+                              sharedPrefs.removeActivity(
+                                  activity: activityItems![index],
+                                  activityIdx: activityIdx.selectedActivityIdx);
                               activityItems!.remove(activityItems![index]);
                               activityIdx.setSelectedIndex(-1);
                               setState(() {});

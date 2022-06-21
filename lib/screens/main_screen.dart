@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_webapp/model/selectedIndex.dart';
+import 'package:todo_webapp/model/selectedActivity.dart';
 import 'package:todo_webapp/responsive.dart';
 import 'package:todo_webapp/widgets/drawer_widget.dart';
 import 'package:todo_webapp/widgets/task_widget.dart';
@@ -35,8 +35,9 @@ class _MainScreenState extends State<MainScreen> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child:
-                    idx.selectedActivityIdx == -1 ? Container() : TaskWidget(),
+                child: idx.selectedActivityIdx == -1
+                    ? Container()
+                    : const TaskWidget(),
               ),
             ),
           ],
