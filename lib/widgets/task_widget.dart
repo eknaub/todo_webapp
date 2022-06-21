@@ -151,26 +151,23 @@ class _TaskWidgetState extends State<TaskWidget> {
         content: const Text('Are you sure you want to remove all tasks?'),
         actions: <Widget>[
           TextButton(
-            onPressed: () => Navigator.pop(context, ''),
+            onPressed: () => Navigator.pop(context),
             child: const Text('Cancel'),
           ),
           ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red)),
             onPressed: () {
-              Navigator.pop(context, 'Remove');
+              sharedPrefs.removeAllTasksFromActivity(
+                  activityIdx: activityIdx.selectedActivityIdx);
+              setState(() {});
+              Navigator.pop(context);
             },
             child: const Text('Remove'),
           ),
         ],
       ),
-    ).then((value) {
-      if (value == 'Remove') {
-        sharedPrefs.removeAllTasksFromActivity(
-            activityIdx: activityIdx.selectedActivityIdx);
-        setState(() {});
-      }
-    });
+    );
   }
 
   Future<void> _resetAllTasksDialog(BuildContext context) {
@@ -182,26 +179,23 @@ class _TaskWidgetState extends State<TaskWidget> {
             const Text('Are you sure you want to reset progress of all tasks?'),
         actions: <Widget>[
           TextButton(
-            onPressed: () => Navigator.pop(context, ''),
+            onPressed: () => Navigator.pop(context),
             child: const Text('Cancel'),
           ),
           ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red)),
             onPressed: () {
-              Navigator.pop(context, 'Reset');
+              sharedPrefs.resetProgressFromAllTasksForActivity(
+                  activityIdx: activityIdx.selectedActivityIdx);
+              setState(() {});
+              Navigator.pop(context);
             },
             child: const Text('Reset'),
           ),
         ],
       ),
-    ).then((value) {
-      if (value == 'Reset') {
-        sharedPrefs.resetProgressFromAllTasksForActivity(
-            activityIdx: activityIdx.selectedActivityIdx);
-        setState(() {});
-      }
-    });
+    );
   }
 
   Future<void> _addTaskDialog(BuildContext context) {
@@ -230,7 +224,7 @@ class _TaskWidgetState extends State<TaskWidget> {
         ),
         actions: <Widget>[
           TextButton(
-            onPressed: () => Navigator.pop(context, ''),
+            onPressed: () => Navigator.pop(context),
             child: const Text('Cancel'),
           ),
           ElevatedButton(
@@ -238,60 +232,57 @@ class _TaskWidgetState extends State<TaskWidget> {
                 backgroundColor:
                     MaterialStateProperty.all(Colors.blueGrey[700])),
             onPressed: () {
-              Navigator.pop(context, _taskDescriptionController.text);
+              if (_taskDescriptionController.text.isNotEmpty) {
+                if (_taskStepsController.text.isNotEmpty &&
+                    _taskDescriptionController.text.isNotEmpty) {
+                  int? num = int.tryParse(_taskStepsController.text);
+                  if (num != null) {
+                    taskItems.add(TodoItemWidget(
+                        taskIdx: activityTaskData.length,
+                        taskDescription: _taskDescriptionController.text,
+                        taskSteps: num,
+                        taskCurrentSteps: 0,
+                        onStateChanged: () {
+                          setState(() {});
+                        }));
+                    sharedPrefs.addTaskToActivity(
+                        taskIdx: activityTaskData.length,
+                        activityIdx: activityIdx.selectedActivityIdx,
+                        description: _taskDescriptionController.text,
+                        steps: num,
+                        currSteps: 0);
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Add task'),
+                        content: const Text(
+                            'Adding task failed, steps input must be numeric.'),
+                        actions: <Widget>[
+                          ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.red)),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Ok'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                }
+              }
+              _taskDescriptionController.text = '';
+              _taskStepsController.text = '';
+              setState(() {});
+              Navigator.pop(context);
             },
             child: const Text('Add'),
           ),
         ],
       ),
-    ).then(
-      (value) {
-        if (value != null && value.isNotEmpty) {
-          if (_taskStepsController.text.isNotEmpty &&
-              _taskDescriptionController.text.isNotEmpty) {
-            int? num = int.tryParse(_taskStepsController.text);
-            if (num != null) {
-              taskItems.add(TodoItemWidget(
-                  taskIdx: activityTaskData.length,
-                  taskDescription: _taskDescriptionController.text,
-                  taskSteps: num,
-                  taskCurrentSteps: 0,
-                  onStateChanged: () {
-                    setState(() {});
-                  }));
-              sharedPrefs.addTaskToActivity(
-                  taskIdx: activityTaskData.length,
-                  activityIdx: activityIdx.selectedActivityIdx,
-                  description: _taskDescriptionController.text,
-                  steps: num,
-                  currSteps: 0);
-            } else {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  title: const Text('Add task'),
-                  content: const Text(
-                      'Adding task failed, steps input must be numeric.'),
-                  actions: <Widget>[
-                    ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.red)),
-                      onPressed: () {
-                        Navigator.pop(context, 'Ok');
-                      },
-                      child: const Text('Ok'),
-                    ),
-                  ],
-                ),
-              );
-            }
-          }
-        }
-        _taskDescriptionController.text = '';
-        _taskStepsController.text = '';
-        setState(() {});
-      },
     );
   }
 }

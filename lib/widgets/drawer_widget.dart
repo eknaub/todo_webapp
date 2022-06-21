@@ -49,66 +49,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     Icons.add,
                     color: Colors.white,
                   ),
-                  onPressed: () => showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: const Text('Add activity'),
-                      content: TextField(
-                        decoration: const InputDecoration(
-                          border: UnderlineInputBorder(),
-                          hintText: 'Enter a new activity',
-                        ),
-                        controller: _controller,
-                      ),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, ''),
-                          child: const Text('Cancel'),
-                        ),
-                        ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                  Colors.blueGrey[700])),
-                          onPressed: () {
-                            Navigator.pop(context, _controller.text);
-                          },
-                          child: const Text('Add'),
-                        ),
-                      ],
-                    ),
-                  ).then((value) {
-                    if (value != null && value.isNotEmpty) {
-                      if (activityItems != null) {
-                        if (activityItems!.contains(_controller.text)) {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              title: const Text('Add activity'),
-                              content: const Text(
-                                  'Adding activity failed, activity already exists.'),
-                              actions: <Widget>[
-                                ElevatedButton(
-                                  style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              Colors.red)),
-                                  onPressed: () {
-                                    Navigator.pop(context, 'Ok');
-                                  },
-                                  child: const Text('Ok'),
-                                ),
-                              ],
-                            ),
-                          );
-                        } else {
-                          activityItems!.add(_controller.text);
-                          sharedPrefs.addActivity(activity: _controller.text);
-                        }
-                      }
-                    }
-                    _controller.text = '';
-                    setState(() {});
-                  }),
+                  onPressed: () => _addActivityDialog(context),
                 ),
               ),
               const Text(
@@ -147,40 +88,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       color: Colors.white,
                     )),
                 trailing: IconButton(
-                    onPressed: () => showDialog<String>(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title: const Text('Remove activity'),
-                            content: Text(
-                                'Are you sure you want to remove the activity \'${activityItems![index]}\'.'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, ''),
-                                child: const Text('Cancel'),
-                              ),
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.red)),
-                                onPressed: () {
-                                  Navigator.pop(context, 'Remove');
-                                },
-                                child: const Text('Remove'),
-                              ),
-                            ],
-                          ),
-                        ).then((value) {
-                          if (value == 'Remove') {
-                            if (activityItems != null) {
-                              sharedPrefs.removeActivity(
-                                  activity: activityItems![index],
-                                  activityIdx: activityIdx.selectedActivityIdx);
-                              activityItems!.remove(activityItems![index]);
-                              activityIdx.setSelectedIndex(-1);
-                              setState(() {});
-                            }
-                          }
-                        }),
+                    onPressed: () => _removeActivityDialog(context, index),
                     icon: const Icon(Icons.delete, color: Colors.red)),
                 tileColor: activityIdx.selectedActivityIdx == index
                     ? Colors.blueGrey[800]
@@ -219,6 +127,103 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     color: Colors.white,
                   ))),
           const Version()
+        ],
+      ),
+    );
+  }
+
+  Future<void> _removeActivityDialog(BuildContext context, int index) {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Remove activity'),
+        content: Text(
+            'Are you sure you want to remove the activity \'${activityItems![index]}\'.'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.red)),
+            onPressed: () {
+              if (activityItems != null) {
+                sharedPrefs.removeActivity(
+                    activity: activityItems![index],
+                    activityIdx: activityIdx.selectedActivityIdx);
+                activityItems!.remove(activityItems![index]);
+                activityIdx.setSelectedIndex(-1);
+                setState(() {});
+              }
+              Navigator.pop(context);
+            },
+            child: const Text('Remove'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _addActivityDialog(BuildContext context) {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Add activity'),
+        content: TextField(
+          decoration: const InputDecoration(
+            border: UnderlineInputBorder(),
+            hintText: 'Enter a new activity',
+          ),
+          controller: _controller,
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => {
+              _controller.text = '',
+              Navigator.pop(context),
+            },
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Colors.blueGrey[700])),
+            onPressed: () {
+              if (_controller.text.isNotEmpty) {
+                if (activityItems != null) {
+                  if (activityItems!.contains(_controller.text)) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Add activity'),
+                        content: const Text(
+                            'Activity already exists, enter a new one.'),
+                        actions: <Widget>[
+                          ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.red)),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Ok'),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    activityItems!.add(_controller.text);
+                    sharedPrefs.addActivity(activity: _controller.text);
+                    _controller.text = '';
+                    Navigator.pop(context);
+                  }
+                }
+              }
+              setState(() {});
+            },
+            child: const Text('Add'),
+          ),
         ],
       ),
     );

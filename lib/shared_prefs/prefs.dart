@@ -142,6 +142,13 @@ class Preferences {
     return items;
   }
 
+  int getActivityNamesLength() {
+    late List<String>? items;
+    items = sharedPrefs.instance.getStringList('activities');
+    items ??= [];
+    return items.length;
+  }
+
   void addActivity({required String activity}) {
     late List<String>? items = getAllActivityNames();
     items?.add(activity);

@@ -123,30 +123,27 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
     return showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Text('Remove activity'),
+        title: const Text('Remove task'),
         content: const Text('Are you sure you want to remove this task?'),
         actions: <Widget>[
           TextButton(
-            onPressed: () => Navigator.pop(context, ''),
+            onPressed: () => Navigator.pop(context),
             child: const Text('Cancel'),
           ),
           ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red)),
             onPressed: () {
-              Navigator.pop(context, 'Remove');
+              sharedPrefs.removeTaskFromActivity(
+                  activityIdx: activityIdx.selectedActivityIdx,
+                  taskIdx: widget.taskIdx);
+              widget.onStateChanged(); //update state of parent widget
+              Navigator.pop(context);
             },
             child: const Text('Remove'),
           ),
         ],
       ),
-    ).then((value) {
-      if (value == 'Remove') {
-        sharedPrefs.removeTaskFromActivity(
-            activityIdx: activityIdx.selectedActivityIdx,
-            taskIdx: widget.taskIdx);
-        widget.onStateChanged(); //update state of parent widget
-      }
-    });
+    );
   }
 }
