@@ -99,7 +99,7 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
                     Icons.add,
                     color: Colors.white,
                   )),
-              const Spacer(),
+              const SizedBox(width: 24),
               Text(
                 widget.taskDescription,
                 style: const TextStyle(
@@ -109,7 +109,7 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
               ),
               const Spacer(),
               IconButton(
-                icon: const Icon(Icons.delete, color: Colors.white),
+                icon: const Icon(Icons.delete, color: Colors.red),
                 onPressed: () => _removeActivityDialog(context),
               ),
             ],
