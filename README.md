@@ -2,13 +2,14 @@
 
 A simple dynamic To-do Web app, including a notes section, made with Flutter.
 
-[![Flutter][flutter-shield]][flutter-url] [![Dart][dart-shield]][dart-url]
-
 <div align="center">
     <a href="https://eduard-knaub.de">
       www.eduard-knaub.de
     </a>
 </div>
+
+## 🔨 Technologies
+[![Flutter][flutter-shield]][flutter-url] [![Dart][dart-shield]][dart-url]
 
 ## 📜 Features
 - Add/remove activities
@@ -28,9 +29,9 @@ A simple dynamic To-do Web app, including a notes section, made with Flutter.
 [flutter-url]: https://flutter.io/
 [dart-shield]: https://img.shields.io/badge/Dart-Language-blue?logo=dart
 [dart-url]: https://www.dartlang.org/
-[notesDesktop-screenshot]: images/notesDesktop.png
-[notesMobile-screenshot]: images/notesMobile.png
-[todoDesktop-screenshot]: images/todoDesktop.png
-[todoMobile-screenshot]: images/todoMobile.png
-[drawerMobile-screenshot]: images/drawerMobile.png
+[notesDesktop-screenshot]: /images/notesDesktop.png
+[notesMobile-screenshot]: /images/notesMobile.png
+[todoDesktop-screenshot]: /images/todoDesktop.png
+[todoMobile-screenshot]: /images/todoMobile.png
+[drawerMobile-screenshot]: /images/drawerMobile.png
 
