@@ -1,9 +1,9 @@
 ## ✔️ Flutter To-do Web app 
 
-A simple dynamic To-do Web app, including a notes section, made with Flutter.
+A simple dynamic To-do Web app, including a notes section, made with Flutter and Dart.
 
 <div align="center">
-	  [![Flutter][flutter-shield]][flutter-url] [![Dart][dart-shield]][dart-url]
+[![Flutter][flutter-shield]][flutter-url] [![Dart][dart-shield]][dart-url]
 </div>
 
 <div align="center">
@@ -21,8 +21,8 @@ A simple dynamic To-do Web app, including a notes section, made with Flutter.
 
 ## 📸 Screenshots
 
-<img src="notesDesktop.png" width="300"> <img src="notesMobile.png" width="300"> <img src="todoDesktop.png" width="300">
-<img src="todoMobile.png" width="300"> <img src="drawerMobile.png" width="300"> 
+<img src="https://github.com/raqo0/todo_webapp/blob/main/notesDesktop.png" width="300"> <img src="https://github.com/raqo0/todo_webapp/blob/main/notesMobile.png" width="300"> <img src="https://github.com/raqo0/todo_webapp/blob/main/todoDesktop.png" width="300">
+<img src="https://github.com/raqo0/todo_webapp/blob/main/todoMobile.png" width="300"> <img src="https://github.com/raqo0/todo_webapp/blob/main/drawerMobile.png" width="300"> 
 
 
 [flutter-shield]: https://img.shields.io/badge/Flutter-Framework-blue?logo=flutter
