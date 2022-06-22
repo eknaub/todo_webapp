@@ -12,6 +12,7 @@ A simple dynamic To-do Web app, including a notes section, made with Flutter.
 [![Flutter][flutter-shield]][flutter-url] [![Dart][dart-shield]][dart-url]
 
 ## 📜 Features
+
 - Add/remove activities
 - Add/remove tasks
 - Keep track of your task progresses
@@ -20,17 +21,13 @@ A simple dynamic To-do Web app, including a notes section, made with Flutter.
 
 ## 📸 Screenshots
 
-[![notesDesktop][notesDesktop-screenshot] [![notesMobile][notesMobile-screenshot]
-[![todoDesktop][todoDesktop-screenshot] [![todoMobile][todoMobile-screenshot]
-[![drawerMobile][drawerMobile-screenshot]{:width="36px"}
-
+<img src="https://raw.githubusercontent.com/raqo0/todo_webapp/main/images/notesDesktop.PNG" width="50%" height="50%"> 
+<img src="https://raw.githubusercontent.com/raqo0/todo_webapp/main/images/notesMobile.PNG" width="50%" height="50%"> 
+<img src="https://raw.githubusercontent.com/raqo0/todo_webapp/main/images/todoDesktop.PNG" width="50%" height="50%"> 
+<img src="https://raw.githubusercontent.com/raqo0/todo_webapp/main/images/todoMobile.PNG" width="50%" height="50%"> 
+<img src="https://raw.githubusercontent.com/raqo0/todo_webapp/main/images/drawerMobile.PNG" width="50%" height="50%"> 
 
 [flutter-shield]: https://img.shields.io/badge/Flutter-Framework-blue?logo=flutter
 [flutter-url]: https://flutter.io/
 [dart-shield]: https://img.shields.io/badge/Dart-Language-blue?logo=dart
 [dart-url]: https://www.dartlang.org/
-[notesDesktop-screenshot]: https://raw.githubusercontent.com/raqo0/todo_webapp/main/images/drawerMobile.PNG
-[notesMobile-screenshot]: https://raw.githubusercontent.com/raqo0/todo_webapp/main/images/notesMobile.PNG
-[todoDesktop-screenshot]: https://raw.githubusercontent.com/raqo0/todo_webapp/main/images/todoDesktop.PNG
-[todoMobile-screenshot]: https://raw.githubusercontent.com/raqo0/todo_webapp/main/images/todoMobile.PNG
-[drawerMobile-screenshot]: https://raw.githubusercontent.com/raqo0/todo_webapp/main/images/drawerMobile.PNG
