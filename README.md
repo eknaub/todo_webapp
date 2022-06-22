@@ -21,7 +21,7 @@ A simple dynamic To-do Web app, including a notes section, made with Flutter.
 
 ## 📸 Screenshots
 
-<img src="https://raw.githubusercontent.com/raqo0/todo_webapp/main/images/notesDesktop.PNG" width="50%" height="50%"> 
+<img src="https://raw.githubusercontent.com/raqo0/todo_webapp/main/images/notesDesktop.PNG" title="title" width="50%" height="50%"> 
 <img src="https://raw.githubusercontent.com/raqo0/todo_webapp/main/images/notesMobile.PNG" width="50%" height="50%"> 
 <img src="https://raw.githubusercontent.com/raqo0/todo_webapp/main/images/todoDesktop.PNG" width="50%" height="50%"> 
 <img src="https://raw.githubusercontent.com/raqo0/todo_webapp/main/images/todoMobile.PNG" width="50%" height="50%"> 
