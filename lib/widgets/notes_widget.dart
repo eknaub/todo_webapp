@@ -49,41 +49,7 @@ class _NotesWidgetState extends State<NotesWidget> {
                 "New note",
               ),
               icon: const Icon(Icons.add),
-              onPressed: () => showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  title: const Text('Add note'),
-                  content: TextField(
-                    controller: _noteController,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    textCapitalization: TextCapitalization.sentences,
-                    decoration: const InputDecoration(
-                      hintText: "Type something ...",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () =>
-                          {_noteController.text = '', Navigator.pop(context)},
-                      child: const Text('Cancel'),
-                    ),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.blueGrey[700])),
-                      onPressed: () {
-                        sharedPrefs.addNote(note: _noteController.text);
-                        _noteController.text = '';
-                        setState(() {});
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Save'),
-                    ),
-                  ],
-                ),
-              ),
+              onPressed: () => _addNoteDialog(context),
             ),
             const SizedBox(
               width: 16,
@@ -94,32 +60,7 @@ class _NotesWidgetState extends State<NotesWidget> {
               label: const Text(
                 "Remove all notes",
               ),
-              onPressed: () => showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  title: const Text('Remove all notes'),
-                  content:
-                      const Text('Are you sure you want to remove all notes?'),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () =>
-                          {_noteController.text = '', Navigator.pop(context)},
-                      child: const Text('Cancel'),
-                    ),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.red)),
-                      onPressed: () {
-                        sharedPrefs.removeAllNotes();
-                        setState(() {});
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Remove'),
-                    ),
-                  ],
-                ),
-              ),
+              onPressed: () => _removeAllNotesDialog(context),
             ),
           ],
         ),
@@ -159,6 +100,71 @@ class _NotesWidgetState extends State<NotesWidget> {
           },
         ),
       ],
+    );
+  }
+
+  Future<String?> _removeAllNotesDialog(BuildContext context) {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Remove all notes'),
+        content: const Text('Are you sure you want to remove all notes?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () =>
+                {_noteController.text = '', Navigator.pop(context)},
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.red)),
+            onPressed: () {
+              sharedPrefs.removeAllNotes();
+              setState(() {});
+              Navigator.pop(context);
+            },
+            child: const Text('Remove'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<String?> _addNoteDialog(BuildContext context) {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Add note'),
+        content: TextField(
+          controller: _noteController,
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+          textCapitalization: TextCapitalization.sentences,
+          decoration: const InputDecoration(
+            hintText: "Type something ...",
+            border: OutlineInputBorder(),
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () =>
+                {_noteController.text = '', Navigator.pop(context)},
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Colors.blueGrey[700])),
+            onPressed: () {
+              sharedPrefs.addNote(note: _noteController.text);
+              _noteController.text = '';
+              setState(() {});
+              Navigator.pop(context);
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
     );
   }
 }
