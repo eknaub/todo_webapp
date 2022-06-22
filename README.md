@@ -8,8 +8,12 @@ A simple dynamic To-do Web app, including a notes section, made with Flutter.
     </a>
 </div>
 
+
+
 ## 🔨 Technologies
 [![Flutter][flutter-shield]][flutter-url] [![Dart][dart-shield]][dart-url]
+
+
 
 ## 📜 Features
 - Add/remove activities
@@ -17,6 +21,8 @@ A simple dynamic To-do Web app, including a notes section, made with Flutter.
 - Keep track of your task progresses
 - Add/remove notes
 - Usable for desktop and mobile
+
+
 
 ## 📸 Screenshots
 
@@ -29,9 +35,8 @@ A simple dynamic To-do Web app, including a notes section, made with Flutter.
 [flutter-url]: https://flutter.io/
 [dart-shield]: https://img.shields.io/badge/Dart-Language-blue?logo=dart
 [dart-url]: https://www.dartlang.org/
-[notesDesktop-screenshot]: /images/notesDesktop.png
-[notesMobile-screenshot]: /images/notesMobile.png
-[todoDesktop-screenshot]: /images/todoDesktop.png
-[todoMobile-screenshot]: /images/todoMobile.png
-[drawerMobile-screenshot]: /images/drawerMobile.png
-
+[notesDesktop-screenshot]: https://raw.githubusercontent.com/raqo0/todo_webapp/main/images/drawerMobile.PNG
+[notesMobile-screenshot]: https://raw.githubusercontent.com/raqo0/todo_webapp/main/images/notesMobile.PNG
+[todoDesktop-screenshot]: https://raw.githubusercontent.com/raqo0/todo_webapp/main/images/todoDesktop.PNG
+[todoMobile-screenshot]: https://raw.githubusercontent.com/raqo0/todo_webapp/main/images/todoMobile.PNG
+[drawerMobile-screenshot]: https://raw.githubusercontent.com/raqo0/todo_webapp/main/images/drawerMobile.PNG
