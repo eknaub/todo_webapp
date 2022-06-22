@@ -8,12 +8,8 @@ A simple dynamic To-do Web app, including a notes section, made with Flutter.
     </a>
 </div>
 
-
-
 ## 🔨 Technologies
 [![Flutter][flutter-shield]][flutter-url] [![Dart][dart-shield]][dart-url]
-
-
 
 ## 📜 Features
 - Add/remove activities
@@ -22,13 +18,11 @@ A simple dynamic To-do Web app, including a notes section, made with Flutter.
 - Add/remove notes
 - Usable for desktop and mobile
 
-
-
 ## 📸 Screenshots
 
-[![notesDesktop][notesDesktop-screenshot]] [![notesMobile][notesMobile-screenshot]]
-[![todoDesktop][todoDesktop-screenshot]] [![todoMobile][todoMobile-screenshot]]
-[![drawerMobile][drawerMobile-screenshot]]
+[![notesDesktop][notesDesktop-screenshot] [![notesMobile][notesMobile-screenshot]
+[![todoDesktop][todoDesktop-screenshot] [![todoMobile][todoMobile-screenshot]
+[![drawerMobile][drawerMobile-screenshot]
 
 
 [flutter-shield]: https://img.shields.io/badge/Flutter-Framework-blue?logo=flutter
