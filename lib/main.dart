@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => SelectedActivity(),
       child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: MainScreen(),
       ),
     );

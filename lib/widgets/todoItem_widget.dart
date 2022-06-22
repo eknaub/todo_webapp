@@ -44,13 +44,17 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
       margin: const EdgeInsets.all(6.0),
       child: InkWell(
         onTap: () => {},
-        hoverColor: Colors.blueGrey[700],
+        hoverColor: Colors.blueGrey[800],
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         mouseCursor: MouseCursor.defer,
         child: Container(
           padding: const EdgeInsets.all(6.0),
-          decoration: BoxDecoration(border: Border.all(color: Colors.black87)),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black87),
+            color:
+                taskProgress == 1.0 ? Colors.blueGrey[800] : Colors.transparent,
+          ),
           child: Row(
             children: [
               IconButton(

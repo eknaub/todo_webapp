@@ -1,16 +1,31 @@
-# todo_webapp
+## ✔️ Flutter To-do Web app 
 
-A new Flutter project for a ToDo-List
+A simple dynamic To-do Web app, including a notes section, made with Flutter.
 
-## Getting Started
+<div align="center">
+	  [![Flutter][flutter-shield]][flutter-url] [![Dart][dart-shield]][dart-url]
+</div>
 
-This project is a starting point for a Flutter application.
+<div align="center">
+    <a href="https://eduard-knaub.de">
+      www.eduard-knaub.de
+    </a>
+</div>
 
-A few resources to get you started if this is your first Flutter project:
+## 📜 Features
+- Add/remove activities
+- Add/remove tasks
+- Keep track of your task progresses
+- Add/remove notes
+- Usable for desktop and mobile
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 📸 Screenshots
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<img src="notesDesktop.png" width="300"> <img src="notesMobile.png" width="300"> <img src="todoDesktop.png" width="300">
+<img src="todoMobile.png" width="300"> <img src="drawerMobile.png" width="300"> 
+
+
+[flutter-shield]: https://img.shields.io/badge/Flutter-Framework-blue?logo=flutter
+[flutter-url]: https://flutter.io/
+[dart-shield]: https://img.shields.io/badge/Dart-Language-blue?logo=dart
+[dart-url]: https://www.dartlang.org/

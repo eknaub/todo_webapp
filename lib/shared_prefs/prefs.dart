@@ -74,16 +74,14 @@ class Preferences {
     required String activity,
   }) {
     var tasks = getTasksForActivity(activity: activity);
-    double totalProgress = 0.0;
+    double totalProgress = tasks.length as double;
     double currentProgress = 0.0;
     //add to currentProgress only if task is 100% done
     for (var task in tasks) {
       if (task[1] == task[2]) {
-        currentProgress += task[2];
+        currentProgress++;
       }
-      totalProgress += task[1];
     }
-
     if (currentProgress != 0) {
       return currentProgress / totalProgress;
     }

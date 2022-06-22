@@ -137,8 +137,8 @@ class _NotesWidgetState extends State<NotesWidget> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
+                  Expanded(
+                    flex: 12,
                     child: Text(
                       notes![index],
                       style: const TextStyle(color: Colors.white, fontSize: 18),
