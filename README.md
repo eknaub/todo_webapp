@@ -21,11 +21,20 @@ A simple dynamic To-do Web app, including a notes section, made with Flutter.
 
 ## 📸 Screenshots
 
+<div align="center">
+    Desktop
+</div>
+
 <img src="https://github.com/raqo0/todo_webapp/blob/main/images/notesDesktop.PNG" width="75%" height="75%"> 
-<img src="https://github.com/raqo0/todo_webapp/blob/main/images/notesMobile.PNG" width="75%" height="75%"> 
 <img src="https://github.com/raqo0/todo_webapp/blob/main/images/todoDesktop.PNG" width="75%" height="75%"> 
-<img src="https://github.com/raqo0/todo_webapp/blob/main/images/todoMobile.PNG" width="75%" height="75%"> 
+
+<div align="center">
+    Mobile
+</div>
+
 <img src="https://github.com/raqo0/todo_webapp/blob/main/images/drawerMobile.PNG" width="75%" height="75%"> 
+<img src="https://github.com/raqo0/todo_webapp/blob/main/images/notesMobile.PNG" width="75%" height="75%"> 
+<img src="https://github.com/raqo0/todo_webapp/blob/main/images/todoMobile.PNG" width="75%" height="75%"> 
 
 [flutter-shield]: https://img.shields.io/badge/Flutter-Framework-blue?logo=flutter
 [flutter-url]: https://flutter.io/
