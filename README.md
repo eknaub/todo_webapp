@@ -20,9 +20,9 @@ A simple dynamic To-do Web app, including a notes section, made with Flutter.
 
 ## 📸 Screenshots
 
-[![notesDesktop][notesDesktop-screenshot|width=200px] [![notesMobile][notesMobile-screenshot|width=200px]
-[![todoDesktop][todoDesktop-screenshot|width=200px] [![todoMobile][todoMobile-screenshot|width=200px]
-[![drawerMobile]<img src="[drawerMobile-screenshot]" width="200">
+[![notesDesktop][notesDesktop-screenshot] [![notesMobile][notesMobile-screenshot]
+[![todoDesktop][todoDesktop-screenshot] [![todoMobile][todoMobile-screenshot]
+[![drawerMobile][drawerMobile-screenshot]{:width="36px"}
 
 
 [flutter-shield]: https://img.shields.io/badge/Flutter-Framework-blue?logo=flutter
