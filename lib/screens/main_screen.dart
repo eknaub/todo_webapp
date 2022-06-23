@@ -17,6 +17,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   late SelectedActivity idx;
+
   @override
   Widget build(BuildContext context) {
     idx = Provider.of<SelectedActivity>(context);

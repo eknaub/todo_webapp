@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_webapp/shared_prefs/prefs.dart';
+import 'package:todo_webapp/model/noteList.dart';
 
 class NotesWidget extends StatefulWidget {
   const NotesWidget({Key? key}) : super(key: key);
@@ -10,12 +10,13 @@ class NotesWidget extends StatefulWidget {
 
 class _NotesWidgetState extends State<NotesWidget> {
   late TextEditingController _noteController;
-  late List<String>? notes = [];
+  late NoteList notesList;
 
   @override
   void initState() {
     super.initState();
     _noteController = TextEditingController();
+    notesList = NoteList();
   }
 
   @override
@@ -26,7 +27,6 @@ class _NotesWidgetState extends State<NotesWidget> {
 
   @override
   Widget build(BuildContext context) {
-    notes = sharedPrefs.getAllNotes();
     return Column(
       children: [
         const Center(
@@ -69,7 +69,7 @@ class _NotesWidgetState extends State<NotesWidget> {
         ),
         ListView.builder(
           shrinkWrap: true,
-          itemCount: notes?.length,
+          itemCount: notesList.length(),
           itemBuilder: (BuildContext context, int index) {
             return Container(
               padding: const EdgeInsets.all(8),
@@ -81,15 +81,16 @@ class _NotesWidgetState extends State<NotesWidget> {
                   Expanded(
                     flex: 12,
                     child: Text(
-                      notes![index],
+                      notesList.getNoteAt(index: index),
                       style: const TextStyle(color: Colors.white, fontSize: 18),
                     ),
                   ),
                   const Spacer(),
                   IconButton(
                     onPressed: () {
-                      sharedPrefs.removeNoteFromNotes(noteIdx: index);
-                      setState(() {});
+                      setState(() {
+                        notesList.removeAt(index: index);
+                      });
                     },
                     icon: const Icon(Icons.delete),
                     color: Colors.white,
@@ -119,9 +120,10 @@ class _NotesWidgetState extends State<NotesWidget> {
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red)),
             onPressed: () {
-              sharedPrefs.removeAllNotes();
-              setState(() {});
-              Navigator.pop(context);
+              setState(() {
+                notesList.removeAll();
+                Navigator.pop(context);
+              });
             },
             child: const Text('Remove'),
           ),
@@ -156,9 +158,10 @@ class _NotesWidgetState extends State<NotesWidget> {
                 backgroundColor:
                     MaterialStateProperty.all(Colors.blueGrey[700])),
             onPressed: () {
-              sharedPrefs.addNote(note: _noteController.text);
-              _noteController.text = '';
-              setState(() {});
+              setState(() {
+                notesList.add(note: _noteController.text);
+                _noteController.text = '';
+              });
               Navigator.pop(context);
             },
             child: const Text('Save'),

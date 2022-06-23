@@ -1,28 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_webapp/model/selectedActivity.dart';
-import 'package:todo_webapp/shared_prefs/prefs.dart';
+import 'package:todo_webapp/model/task.dart';
 
 class TodoItemWidget extends StatefulWidget {
-  final int taskIdx;
-  final String taskDescription;
-  final int taskSteps;
-  final int taskCurrentSteps;
-  final Function() onStateChanged; //trigger rebuild if task item changed
+  final Task task;
 
-  /*
-  0 = taskIdx
-  1 = taskSteps
-  2 = taskCurrentSteps
-  3 = taskDescription
-   */
   const TodoItemWidget({
     Key? key,
-    required this.taskIdx,
-    required this.taskDescription,
-    required this.taskSteps,
-    required this.taskCurrentSteps,
-    required this.onStateChanged,
+    required this.task,
   }) : super(key: key);
 
   @override
@@ -31,15 +17,11 @@ class TodoItemWidget extends StatefulWidget {
 
 class _TodoItemWidgetState extends State<TodoItemWidget> {
   late SelectedActivity activityIdx;
-  late double taskProgress = 0.0;
-  late String activityName = '';
 
   @override
   Widget build(BuildContext context) {
     activityIdx = Provider.of<SelectedActivity>(context);
-    activityName = sharedPrefs.getActivityName(
-        activityIdx: activityIdx.selectedActivityIdx);
-    taskProgress = widget.taskCurrentSteps / widget.taskSteps;
+    widget.task.updateSelectedActivity(activityIdx: activityIdx);
     return Container(
       margin: const EdgeInsets.all(6.0),
       child: InkWell(
@@ -52,16 +34,16 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
           padding: const EdgeInsets.all(6.0),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.black87),
-            color:
-                taskProgress == 1.0 ? Colors.blueGrey[800] : Colors.transparent,
+            color: widget.task.getTaskProgress() == 1.0
+                ? Colors.blueGrey[800]
+                : Colors.transparent,
           ),
           child: Row(
             children: [
               IconButton(
                   onPressed: () {
-                    sharedPrefs.decrementProgressOfTask(
-                        activity: activityName, taskIdx: widget.taskIdx);
-                    widget.onStateChanged();
+                    widget.task.decrementProgressOfTask();
+                    widget.task.onStateChanged();
                   },
                   icon: const Icon(
                     Icons.remove,
@@ -74,7 +56,8 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
                   children: [
                     Center(
                         child: TweenAnimationBuilder<double>(
-                      tween: Tween<double>(begin: 0.0, end: taskProgress),
+                      tween: Tween<double>(
+                          begin: 0.0, end: widget.task.getTaskProgress()),
                       duration: const Duration(milliseconds: 500),
                       builder: (context, value, _) => CircularProgressIndicator(
                         value: value,
@@ -84,7 +67,7 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
                     )),
                     Center(
                       child: Text(
-                        "${widget.taskCurrentSteps}/${widget.taskSteps}",
+                        "${widget.task.taskCurrentSteps}/${widget.task.taskSteps}",
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12.0,
@@ -96,9 +79,8 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
               ),
               IconButton(
                   onPressed: () {
-                    sharedPrefs.incrementProgressOfTask(
-                        activity: activityName, taskIdx: widget.taskIdx);
-                    widget.onStateChanged();
+                    widget.task.incrementProgressOfTask();
+                    widget.task.onStateChanged();
                   },
                   icon: const Icon(
                     Icons.add,
@@ -106,7 +88,7 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
                   )),
               const SizedBox(width: 24),
               Text(
-                widget.taskDescription,
+                widget.task.taskDescription,
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 14.0,
@@ -139,9 +121,8 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red)),
             onPressed: () {
-              sharedPrefs.removeTaskFromActivity(
-                  activity: activityName, taskIdx: widget.taskIdx);
-              widget.onStateChanged(); //update state of parent widget
+              widget.task.removeTask();
+              widget.task.onStateChanged(); //update state of parent widget
               Navigator.pop(context);
             },
             child: const Text('Remove'),

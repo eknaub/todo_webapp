@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_webapp/model/activityList.dart';
 import 'package:todo_webapp/model/selectedActivity.dart';
-import 'package:todo_webapp/shared_prefs/prefs.dart';
 import 'package:todo_webapp/widgets/version_widget.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -15,14 +15,14 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget> {
   late TextEditingController _activityController;
-  late List<String>? activityItems;
+  late ActivityList activityList;
   late SelectedActivity activityIdx;
 
   @override
   void initState() {
     super.initState();
     _activityController = TextEditingController();
-    activityItems = sharedPrefs.getAllActivityNames();
+    activityList = ActivityList();
   }
 
   @override
@@ -79,10 +79,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           ListView.builder(
             shrinkWrap: true,
-            itemCount: activityItems?.length,
+            itemCount: activityList.length(),
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
-                title: Text(activityItems![index],
+                title: Text(activityList.getActivityAt(index: index),
                     style: const TextStyle(
                       fontSize: 16.0,
                       color: Colors.white,
@@ -118,8 +118,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           ListTile(
               onTap: () {
-                activityIdx.setSelectedIndex(-1);
-                setState(() {});
+                setState(() {
+                  activityIdx.setSelectedIndex(-1);
+                });
               },
               title: const Text("Notes",
                   style: TextStyle(
@@ -138,7 +139,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       builder: (BuildContext context) => AlertDialog(
         title: const Text('Remove activity'),
         content: Text(
-            'Are you sure you want to remove the activity \'${activityItems![index]}\'.'),
+            'Are you sure you want to remove the activity \'${activityList.getActivityAt(index: index)}\'.'),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -148,13 +149,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red)),
             onPressed: () {
-              if (activityItems != null) {
-                sharedPrefs.removeActivity(activity: activityItems![index]);
-                activityItems!.remove(activityItems![index]);
+              setState(() {
+                activityList.removeAt(index: index);
                 activityIdx.setSelectedIndex(-1);
-                setState(() {});
-              }
-              Navigator.pop(context);
+                Navigator.pop(context);
+              });
             },
             child: const Text('Remove'),
           ),
@@ -189,33 +188,30 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     MaterialStateProperty.all(Colors.blueGrey[700])),
             onPressed: () {
               if (_activityController.text.isNotEmpty) {
-                if (activityItems != null) {
-                  if (activityItems!.contains(_activityController.text)) {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        title: const Text('Add activity'),
-                        content: const Text(
-                            'Activity already exists, enter a new one.'),
-                        actions: <Widget>[
-                          ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.red)),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text('Ok'),
-                          ),
-                        ],
-                      ),
-                    );
-                  } else {
-                    activityItems!.add(_activityController.text);
-                    sharedPrefs.addActivity(activity: _activityController.text);
-                    _activityController.text = '';
-                    Navigator.pop(context);
-                  }
+                if (activityList.contains(activity: _activityController.text)) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text('Add activity'),
+                      content: const Text(
+                          'Activity already exists, enter a new one.'),
+                      actions: <Widget>[
+                        ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.red)),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Ok'),
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  activityList.add(activity: _activityController.text);
+                  _activityController.text = '';
+                  Navigator.pop(context);
                 }
               }
               setState(() {});

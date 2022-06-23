@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_webapp/model/selectedActivity.dart';
-import 'package:todo_webapp/shared_prefs/prefs.dart';
+import 'package:todo_webapp/model/taskList.dart';
 import 'package:todo_webapp/widgets/todoItem_widget.dart';
 
 class TaskWidget extends StatefulWidget {
@@ -15,17 +15,14 @@ class _TaskWidgetState extends State<TaskWidget> {
   late TextEditingController _taskDescriptionController;
   late TextEditingController _taskStepsController;
   late SelectedActivity activityIdx;
-  late List<Widget> taskItems = [];
-  late List<dynamic> activityTaskData = [];
-  late String activityName = '';
-  late double totalTaskProgress = 0;
-  late String totalTaskProgressString = '';
+  late TaskList taskItems;
 
   @override
   void initState() {
     super.initState();
     _taskDescriptionController = TextEditingController();
     _taskStepsController = TextEditingController();
+    taskItems = TaskList();
   }
 
   @override
@@ -35,34 +32,17 @@ class _TaskWidgetState extends State<TaskWidget> {
     super.dispose();
   }
 
-  void _buildTaskItems() {
-    taskItems.clear();
-    for (var task in activityTaskData) {
-      taskItems.add(TodoItemWidget(
-          taskIdx: task[0],
-          taskSteps: task[1],
-          taskCurrentSteps: task[2],
-          taskDescription: task[3],
-          onStateChanged: () {
-            setState(() {}); //trigger rebuild if task item changed
-          }));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     activityIdx = Provider.of<SelectedActivity>(context);
-    activityName = sharedPrefs.getActivityName(
-        activityIdx: activityIdx.selectedActivityIdx);
-    activityTaskData = sharedPrefs.getTasksForActivity(activity: activityName);
-    totalTaskProgress =
-        sharedPrefs.getTotalProgressForActivity(activity: activityName);
-    totalTaskProgressString = (totalTaskProgress * 100).toStringAsFixed(0);
-    _buildTaskItems();
+    taskItems.updateSelectedActivity(activityIdx: activityIdx);
+    taskItems.updateTasks(onStateChanged: () {
+      setState(() {});
+    });
     return Column(
       children: [
         Text(
-          activityName,
+          taskItems.getActivityName(),
           style: const TextStyle(
               color: Colors.white, fontSize: 24.0, fontWeight: FontWeight.bold),
         ),
@@ -110,7 +90,8 @@ class _TaskWidgetState extends State<TaskWidget> {
           SizedBox(
               height: 20,
               child: TweenAnimationBuilder<double>(
-                tween: Tween<double>(begin: 0.0, end: totalTaskProgress),
+                tween: Tween<double>(
+                    begin: 0.0, end: taskItems.getTotalTaskProgress()),
                 duration: const Duration(milliseconds: 500),
                 builder: (context, value, _) => LinearProgressIndicator(
                   value: value,
@@ -120,7 +101,7 @@ class _TaskWidgetState extends State<TaskWidget> {
               )),
           Center(
             child: Text(
-              "$totalTaskProgressString% complete",
+              "${taskItems.getTotalTaskProgressAsString()}% complete",
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16.0,
@@ -133,11 +114,9 @@ class _TaskWidgetState extends State<TaskWidget> {
         ),
         ListView.builder(
           shrinkWrap: true,
-          itemCount: taskItems.length,
+          itemCount: taskItems.length(),
           itemBuilder: (BuildContext context, int index) {
-            return Container(
-              child: taskItems[index],
-            );
+            return TodoItemWidget(task: taskItems.tasks[index]);
           },
         ),
       ],
@@ -159,8 +138,9 @@ class _TaskWidgetState extends State<TaskWidget> {
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red)),
             onPressed: () {
-              sharedPrefs.removeAllTasksFromActivity(activity: activityName);
-              setState(() {});
+              setState(() {
+                taskItems.removeAll();
+              });
               Navigator.pop(context);
             },
             child: const Text('Remove'),
@@ -186,9 +166,9 @@ class _TaskWidgetState extends State<TaskWidget> {
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red)),
             onPressed: () {
-              sharedPrefs.resetProgressFromAllTasksForActivity(
-                  activity: activityName);
-              setState(() {});
+              setState(() {
+                taskItems.resetAllProgress();
+              });
               Navigator.pop(context);
             },
             child: const Text('Reset'),
@@ -237,20 +217,12 @@ class _TaskWidgetState extends State<TaskWidget> {
                     _taskDescriptionController.text.isNotEmpty) {
                   int? num = int.tryParse(_taskStepsController.text);
                   if (num != null) {
-                    taskItems.add(TodoItemWidget(
-                        taskIdx: activityTaskData.length,
+                    taskItems.add(
                         taskDescription: _taskDescriptionController.text,
                         taskSteps: num,
-                        taskCurrentSteps: 0,
                         onStateChanged: () {
                           setState(() {});
-                        }));
-                    sharedPrefs.addTaskToActivity(
-                        taskIdx: activityTaskData.length,
-                        activity: activityName,
-                        description: _taskDescriptionController.text,
-                        steps: num,
-                        currSteps: 0);
+                        });
                   } else {
                     showDialog(
                       context: context,
