@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_webapp/constants/colors.dart';
 import 'package:todo_webapp/model/selectedActivity.dart';
 import 'package:todo_webapp/model/task.dart';
 
@@ -26,17 +27,17 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
       margin: const EdgeInsets.all(6.0),
       child: InkWell(
         onTap: () => {},
-        hoverColor: Colors.blueGrey[800],
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
+        hoverColor: Theme.of(context).primaryColor.withOpacity(0.4),
+        splashColor: transparentColor,
+        highlightColor: transparentColor,
         mouseCursor: MouseCursor.defer,
         child: Container(
           padding: const EdgeInsets.all(6.0),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.black87),
+            border: Border.all(color: Theme.of(context).primaryColor),
             color: widget.task.getTaskProgress() == 1.0
-                ? Colors.blueGrey[800]
-                : Colors.transparent,
+                ? Theme.of(context).primaryColor.withOpacity(0.4)
+                : transparentColor,
           ),
           child: Row(
             children: [
@@ -47,7 +48,7 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
                   },
                   icon: const Icon(
                     Icons.remove,
-                    color: Colors.white,
+                    color: whiteColor,
                   )),
               SizedBox(
                 width: 50,
@@ -61,15 +62,15 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
                       duration: const Duration(milliseconds: 500),
                       builder: (context, value, _) => CircularProgressIndicator(
                         value: value,
-                        backgroundColor: Colors.blueGrey,
-                        color: Colors.green,
+                        backgroundColor: Theme.of(context).primaryColor,
+                        color: greenColor,
                       ),
                     )),
                     Center(
                       child: Text(
                         "${widget.task.taskCurrentSteps}/${widget.task.taskSteps}",
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: whiteColor,
                           fontSize: 12.0,
                         ),
                       ),
@@ -84,19 +85,19 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
                   },
                   icon: const Icon(
                     Icons.add,
-                    color: Colors.white,
+                    color: whiteColor,
                   )),
               const SizedBox(width: 24),
               Text(
                 widget.task.taskDescription,
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: whiteColor,
                   fontSize: 14.0,
                 ),
               ),
               const Spacer(),
               IconButton(
-                icon: const Icon(Icons.delete, color: Colors.white),
+                icon: const Icon(Icons.delete, color: whiteColor),
                 onPressed: () => _removeActivityDialog(context),
               ),
             ],
@@ -119,7 +120,9 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
           ),
           ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red)),
+              backgroundColor:
+                  MaterialStateProperty.all(Theme.of(context).errorColor),
+            ),
             onPressed: () {
               widget.task.removeTask();
               widget.task.onStateChanged(); //update state of parent widget

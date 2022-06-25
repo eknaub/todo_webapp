@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_webapp/constants/colors.dart';
 import 'package:todo_webapp/model/noteList.dart';
 
 class NotesWidget extends StatefulWidget {
@@ -33,9 +34,7 @@ class _NotesWidgetState extends State<NotesWidget> {
           child: Text(
             "Notes",
             style: TextStyle(
-                color: Colors.white,
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold),
+                color: whiteColor, fontSize: 24.0, fontWeight: FontWeight.bold),
           ),
         ),
         const SizedBox(
@@ -44,7 +43,8 @@ class _NotesWidgetState extends State<NotesWidget> {
         Row(
           children: [
             ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(primary: Colors.blueGrey),
+              style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).primaryColor),
               label: const Text(
                 "New note",
               ),
@@ -55,7 +55,8 @@ class _NotesWidgetState extends State<NotesWidget> {
               width: 16,
             ),
             ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(primary: Colors.blueGrey),
+              style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).primaryColor),
               icon: const Icon(Icons.delete),
               label: const Text(
                 "Remove all notes",
@@ -74,7 +75,10 @@ class _NotesWidgetState extends State<NotesWidget> {
             return Container(
               padding: const EdgeInsets.all(8),
               margin: const EdgeInsets.all(8),
-              color: Colors.blueGrey[700],
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+                color: Theme.of(context).primaryColor,
+              ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -82,7 +86,7 @@ class _NotesWidgetState extends State<NotesWidget> {
                     flex: 12,
                     child: Text(
                       notesList.getNoteAt(index: index),
-                      style: const TextStyle(color: Colors.white, fontSize: 18),
+                      style: const TextStyle(color: whiteColor, fontSize: 18),
                     ),
                   ),
                   const Spacer(),
@@ -93,7 +97,7 @@ class _NotesWidgetState extends State<NotesWidget> {
                       });
                     },
                     icon: const Icon(Icons.delete),
-                    color: Colors.white,
+                    color: whiteColor,
                   ),
                 ],
               ),
@@ -118,7 +122,9 @@ class _NotesWidgetState extends State<NotesWidget> {
           ),
           ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red)),
+              backgroundColor:
+                  MaterialStateProperty.all(Theme.of(context).errorColor),
+            ),
             onPressed: () {
               setState(() {
                 notesList.removeAll();
@@ -155,8 +161,9 @@ class _NotesWidgetState extends State<NotesWidget> {
           ),
           ElevatedButton(
             style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Colors.blueGrey[700])),
+              backgroundColor:
+                  MaterialStateProperty.all(Theme.of(context).primaryColor),
+            ),
             onPressed: () {
               setState(() {
                 notesList.add(note: _noteController.text);

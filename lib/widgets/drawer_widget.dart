@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_webapp/constants/colors.dart';
 import 'package:todo_webapp/model/activityList.dart';
 import 'package:todo_webapp/model/selectedActivity.dart';
 import 'package:todo_webapp/widgets/version_widget.dart';
@@ -36,7 +37,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     activityIdx = Provider.of<SelectedActivity>(context);
     return Drawer(
       width: 250.0,
-      backgroundColor: Colors.blueGrey[700],
+      backgroundColor: Theme.of(context).primaryColor,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -47,7 +48,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   iconSize: 50.0,
                   icon: const Icon(
                     Icons.add,
-                    color: Colors.white,
+                    color: whiteColor,
                   ),
                   onPressed: () => _addActivityDialog(context),
                 ),
@@ -57,13 +58,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.w600,
-                  color: Colors.white,
+                  color: whiteColor,
                 ),
               )
             ],
           ),
           const Divider(
-            color: Colors.black,
+            color: blackColor,
             indent: 16.0,
             endIndent: 16.0,
           ),
@@ -74,7 +75,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   fontSize: 16.0,
                   fontWeight: FontWeight.w600,
                   fontStyle: FontStyle.italic,
-                  color: Colors.white),
+                  color: whiteColor),
             ),
           ),
           ListView.builder(
@@ -82,16 +83,25 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             itemCount: activityList.length(),
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12.0),
+                    bottomLeft: Radius.circular(12.0),
+                  ),
+                ),
                 title: Text(activityList.getActivityAt(index: index),
                     style: const TextStyle(
                       fontSize: 16.0,
-                      color: Colors.white,
+                      color: whiteColor,
                     )),
                 trailing: IconButton(
                     onPressed: () => _removeActivityDialog(context, index),
-                    icon: const Icon(Icons.delete, color: Colors.white)),
+                    icon: const Icon(
+                      Icons.delete,
+                      color: whiteColor,
+                    )),
                 tileColor: activityIdx.selectedActivityIdx == index
-                    ? Colors.blueGrey[800]
+                    ? Theme.of(context).backgroundColor
                     : null,
                 onTap: () {
                   setState(() {
@@ -102,7 +112,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             },
           ),
           const Divider(
-            color: Colors.black,
+            color: blackColor,
             indent: 16.0,
             endIndent: 16.0,
           ),
@@ -113,10 +123,19 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   fontSize: 16.0,
                   fontWeight: FontWeight.w600,
                   fontStyle: FontStyle.italic,
-                  color: Colors.white),
+                  color: whiteColor),
             ),
           ),
           ListTile(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(12.0),
+                  bottomLeft: Radius.circular(12.0),
+                ),
+              ),
+              tileColor: activityIdx.selectedActivityIdx == -1
+                  ? Theme.of(context).backgroundColor
+                  : null,
               onTap: () {
                 setState(() {
                   activityIdx.setSelectedIndex(-1);
@@ -125,7 +144,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               title: const Text("Notes",
                   style: TextStyle(
                     fontSize: 16.0,
-                    color: Colors.white,
+                    color: whiteColor,
                   ))),
           const Version()
         ],
@@ -147,7 +166,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red)),
+              backgroundColor:
+                  MaterialStateProperty.all(Theme.of(context).errorColor),
+            ),
             onPressed: () {
               setState(() {
                 activityList.removeAt(index: index);
@@ -185,7 +206,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ElevatedButton(
             style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateProperty.all(Colors.blueGrey[700])),
+                    MaterialStateProperty.all(Theme.of(context).primaryColor)),
             onPressed: () {
               if (_activityController.text.isNotEmpty) {
                 if (activityList.contains(activity: _activityController.text)) {
@@ -198,8 +219,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       actions: <Widget>[
                         ElevatedButton(
                           style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.red)),
+                            backgroundColor: MaterialStateProperty.all(
+                                Theme.of(context).errorColor),
+                          ),
                           onPressed: () {
                             Navigator.pop(context);
                           },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_webapp/constants/colors.dart';
 import 'package:todo_webapp/model/selectedActivity.dart';
 import 'package:todo_webapp/model/taskList.dart';
 import 'package:todo_webapp/widgets/todoItem_widget.dart';
@@ -44,7 +45,7 @@ class _TaskWidgetState extends State<TaskWidget> {
         Text(
           taskItems.getActivityName(),
           style: const TextStyle(
-              color: Colors.white, fontSize: 24.0, fontWeight: FontWeight.bold),
+              color: whiteColor, fontSize: 24.0, fontWeight: FontWeight.bold),
         ),
         const SizedBox(
           height: 16,
@@ -52,7 +53,8 @@ class _TaskWidgetState extends State<TaskWidget> {
         Row(
           children: [
             ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(primary: Colors.blueGrey),
+              style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).primaryColor),
               label: const Text(
                 "New task",
               ),
@@ -63,7 +65,8 @@ class _TaskWidgetState extends State<TaskWidget> {
               width: 16,
             ),
             ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(primary: Colors.blueGrey),
+              style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).primaryColor),
               icon: const Icon(Icons.refresh),
               label: const Text(
                 "Reset all tasks",
@@ -74,7 +77,8 @@ class _TaskWidgetState extends State<TaskWidget> {
               width: 16,
             ),
             ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(primary: Colors.blueGrey),
+              style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).primaryColor),
               icon: const Icon(Icons.delete),
               label: const Text(
                 "Remove all tasks",
@@ -87,7 +91,10 @@ class _TaskWidgetState extends State<TaskWidget> {
           height: 16,
         ),
         Stack(children: [
-          SizedBox(
+          Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Theme.of(context).primaryColor),
+              ),
               height: 20,
               child: TweenAnimationBuilder<double>(
                 tween: Tween<double>(
@@ -95,15 +102,15 @@ class _TaskWidgetState extends State<TaskWidget> {
                 duration: const Duration(milliseconds: 500),
                 builder: (context, value, _) => LinearProgressIndicator(
                   value: value,
-                  backgroundColor: Colors.blueGrey,
-                  color: Colors.green,
+                  backgroundColor: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).primaryColor,
                 ),
               )),
           Center(
             child: Text(
               "${taskItems.getTotalTaskProgressAsString()}% complete",
               style: const TextStyle(
-                color: Colors.white,
+                color: whiteColor,
                 fontSize: 16.0,
               ),
             ),
@@ -136,7 +143,9 @@ class _TaskWidgetState extends State<TaskWidget> {
           ),
           ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red)),
+              backgroundColor:
+                  MaterialStateProperty.all(Theme.of(context).errorColor),
+            ),
             onPressed: () {
               setState(() {
                 taskItems.removeAll();
@@ -164,7 +173,9 @@ class _TaskWidgetState extends State<TaskWidget> {
           ),
           ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red)),
+              backgroundColor:
+                  MaterialStateProperty.all(Theme.of(context).errorColor),
+            ),
             onPressed: () {
               setState(() {
                 taskItems.resetAllProgress();
@@ -209,8 +220,9 @@ class _TaskWidgetState extends State<TaskWidget> {
           ),
           ElevatedButton(
             style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Colors.blueGrey[700])),
+              backgroundColor:
+                  MaterialStateProperty.all(Theme.of(context).primaryColor),
+            ),
             onPressed: () {
               if (_taskDescriptionController.text.isNotEmpty) {
                 if (_taskStepsController.text.isNotEmpty &&
@@ -233,8 +245,9 @@ class _TaskWidgetState extends State<TaskWidget> {
                         actions: <Widget>[
                           ElevatedButton(
                             style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.red)),
+                              backgroundColor: MaterialStateProperty.all(
+                                  Theme.of(context).errorColor),
+                            ),
                             onPressed: () {
                               Navigator.pop(context);
                             },

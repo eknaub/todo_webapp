@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_webapp/constants/colors.dart';
 import 'package:todo_webapp/model/selectedActivity.dart';
 import 'package:todo_webapp/responsive.dart';
 import 'package:todo_webapp/widgets/drawer_widget.dart';
@@ -26,11 +27,11 @@ class _MainScreenState extends State<MainScreen> {
             Responsive.isMobile(context) ? const DrawerWidget() : Container(),
         appBar: Responsive.isMobile(context)
             ? AppBar(
-                backgroundColor: Colors.blueGrey[900],
-                shadowColor: Colors.transparent,
+                backgroundColor: Theme.of(context).backgroundColor,
+                shadowColor: transparentColor,
               )
             : null,
-        backgroundColor: Colors.blueGrey[900],
+        backgroundColor: Theme.of(context).backgroundColor,
         body: Row(
           children: [
             Responsive.isDesktop(context) ? const DrawerWidget() : Container(),

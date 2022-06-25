@@ -16,9 +16,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => SelectedActivity(),
-      child: const MaterialApp(
+      child: MaterialApp(
+        theme: ThemeData(
+          backgroundColor: Colors.blueGrey[900],
+          primaryColor: Colors.blueGrey[700],
+        ),
         debugShowCheckedModeBanner: false,
-        home: MainScreen(),
+        home: const MainScreen(),
       ),
     );
   }
