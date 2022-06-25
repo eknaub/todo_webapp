@@ -13,11 +13,8 @@ class Version extends StatelessWidget {
       children: [
         Container(
           padding: const EdgeInsets.all(8.0),
-          child: const Text("Version $version",
-              style: TextStyle(
-                fontSize: 14.0,
-                color: Colors.white,
-              )),
+          child: Text("Version $version",
+              style: Theme.of(context).textTheme.bodyLarge),
         ),
       ],
     );

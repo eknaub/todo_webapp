@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_webapp/constants/colors.dart';
 import 'package:todo_webapp/model/activityList.dart';
 import 'package:todo_webapp/model/selectedActivity.dart';
 import 'package:todo_webapp/widgets/version_widget.dart';
@@ -51,13 +50,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   onPressed: () => _addActivityDialog(context),
                 ),
               ),
-              const Text(
+              Text(
                 'Add new activity',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w600,
-                  color: whiteColor,
-                ),
+                style: Theme.of(context).textTheme.titleLarge,
               )
             ],
           ),
@@ -65,15 +60,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             indent: 16.0,
             endIndent: 16.0,
           ),
-          const Center(
-            child: Text(
-              'Activities',
-              style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w600,
-                  fontStyle: FontStyle.italic,
-                  color: whiteColor),
-            ),
+          Center(
+            child: Text('Activities',
+                style: Theme.of(context).textTheme.titleMedium),
           ),
           ListView.builder(
             shrinkWrap: true,
@@ -87,10 +76,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   ),
                 ),
                 title: Text(activityList.getActivityAt(index: index),
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      color: whiteColor,
-                    )),
+                    style: Theme.of(context).textTheme.titleMedium),
                 trailing: IconButton(
                     onPressed: () => _removeActivityDialog(context, index),
                     icon: const Icon(
@@ -111,36 +97,30 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             indent: 16.0,
             endIndent: 16.0,
           ),
-          const Center(
+          Center(
             child: Text(
               'Misc',
-              style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w600,
-                  fontStyle: FontStyle.italic,
-                  color: whiteColor),
+              style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
           ListTile(
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(12.0),
-                  bottomLeft: Radius.circular(12.0),
-                ),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(12.0),
+                bottomLeft: Radius.circular(12.0),
               ),
-              tileColor: activityIdx.selectedActivityIdx == -1
-                  ? Theme.of(context).backgroundColor
-                  : null,
-              onTap: () {
-                setState(() {
-                  activityIdx.setSelectedIndex(-1);
-                });
-              },
-              title: const Text("Notes",
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: whiteColor,
-                  ))),
+            ),
+            tileColor: activityIdx.selectedActivityIdx == -1
+                ? Theme.of(context).backgroundColor
+                : null,
+            onTap: () {
+              setState(() {
+                activityIdx.setSelectedIndex(-1);
+              });
+            },
+            title:
+                Text("Notes", style: Theme.of(context).textTheme.titleMedium),
+          ),
           const Version()
         ],
       ),

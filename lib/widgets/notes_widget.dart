@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo_webapp/constants/colors.dart';
 import 'package:todo_webapp/model/noteList.dart';
 
 class NotesWidget extends StatefulWidget {
@@ -30,11 +29,10 @@ class _NotesWidgetState extends State<NotesWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Center(
+        Center(
           child: Text(
             "Notes",
-            style: TextStyle(
-                color: whiteColor, fontSize: 24.0, fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
         const SizedBox(
@@ -82,7 +80,7 @@ class _NotesWidgetState extends State<NotesWidget> {
                     flex: 12,
                     child: Text(
                       notesList.getNoteAt(index: index),
-                      style: const TextStyle(color: whiteColor, fontSize: 18),
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
                   const Spacer(),

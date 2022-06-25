@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_webapp/constants/colors.dart';
 import 'package:todo_webapp/model/selectedActivity.dart';
 import 'package:todo_webapp/model/taskList.dart';
 import 'package:todo_webapp/widgets/todoItem_widget.dart';
@@ -44,8 +43,7 @@ class _TaskWidgetState extends State<TaskWidget> {
       children: [
         Text(
           taskItems.getActivityName(),
-          style: const TextStyle(
-              color: whiteColor, fontSize: 24.0, fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(
           height: 16,
@@ -99,12 +97,10 @@ class _TaskWidgetState extends State<TaskWidget> {
                 ),
               )),
           Center(
+            heightFactor: 1.3,
             child: Text(
               "${taskItems.getTotalTaskProgressAsString()}% complete",
-              style: const TextStyle(
-                color: whiteColor,
-                fontSize: 16.0,
-              ),
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
           )
         ]),

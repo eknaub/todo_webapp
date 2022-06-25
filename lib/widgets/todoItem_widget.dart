@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_webapp/constants/colors.dart';
 import 'package:todo_webapp/model/selectedActivity.dart';
 import 'package:todo_webapp/model/task.dart';
 
@@ -68,10 +67,7 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
                     Center(
                       child: Text(
                         "${widget.task.taskCurrentSteps}/${widget.task.taskSteps}",
-                        style: const TextStyle(
-                          color: whiteColor,
-                          fontSize: 12.0,
-                        ),
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                     )
                   ],
@@ -88,10 +84,7 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
               const SizedBox(width: 24),
               Text(
                 widget.task.taskDescription,
-                style: const TextStyle(
-                  color: whiteColor,
-                  fontSize: 14.0,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               const Spacer(),
               IconButton(
