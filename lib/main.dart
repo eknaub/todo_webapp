@@ -18,9 +18,31 @@ class MyApp extends StatelessWidget {
       create: (_) => SelectedActivity(),
       child: MaterialApp(
         theme: ThemeData(
-          backgroundColor: Colors.blueGrey[900],
-          primaryColor: Colors.blueGrey[700],
-        ),
+            backgroundColor: Colors.blueGrey[900],
+            primaryColor: Colors.blueGrey[700],
+            dividerColor: Colors.blueGrey[900],
+            appBarTheme: AppBarTheme(
+              backgroundColor: Colors.blueGrey[900],
+              shadowColor: Colors.transparent,
+            ),
+            scaffoldBackgroundColor: Colors.blueGrey[900],
+            drawerTheme: DrawerThemeData(
+              backgroundColor: Colors.blueGrey[700],
+            ),
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Colors.blueGrey[700]),
+              ),
+            ),
+            iconTheme: const IconThemeData(
+              color: Colors.white,
+            ),
+            listTileTheme: const ListTileThemeData(iconColor: Colors.white),
+            progressIndicatorTheme: ProgressIndicatorThemeData(
+              linearTrackColor: Colors.blueGrey[900],
+              color: Colors.blueGrey[700],
+            )),
         debugShowCheckedModeBanner: false,
         home: const MainScreen(),
       ),

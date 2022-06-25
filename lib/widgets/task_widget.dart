@@ -53,8 +53,6 @@ class _TaskWidgetState extends State<TaskWidget> {
         Row(
           children: [
             ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).primaryColor),
               label: const Text(
                 "New task",
               ),
@@ -65,8 +63,6 @@ class _TaskWidgetState extends State<TaskWidget> {
               width: 16,
             ),
             ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).primaryColor),
               icon: const Icon(Icons.refresh),
               label: const Text(
                 "Reset all tasks",
@@ -77,8 +73,6 @@ class _TaskWidgetState extends State<TaskWidget> {
               width: 16,
             ),
             ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).primaryColor),
               icon: const Icon(Icons.delete),
               label: const Text(
                 "Remove all tasks",
@@ -102,8 +96,6 @@ class _TaskWidgetState extends State<TaskWidget> {
                 duration: const Duration(milliseconds: 500),
                 builder: (context, value, _) => LinearProgressIndicator(
                   value: value,
-                  backgroundColor: Theme.of(context).backgroundColor,
-                  color: Theme.of(context).primaryColor,
                 ),
               )),
           Center(
@@ -143,8 +135,7 @@ class _TaskWidgetState extends State<TaskWidget> {
           ),
           ElevatedButton(
             style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Theme.of(context).errorColor),
+              backgroundColor: MaterialStateProperty.all(Colors.red),
             ),
             onPressed: () {
               setState(() {
@@ -173,8 +164,7 @@ class _TaskWidgetState extends State<TaskWidget> {
           ),
           ElevatedButton(
             style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Theme.of(context).errorColor),
+              backgroundColor: MaterialStateProperty.all(Colors.red),
             ),
             onPressed: () {
               setState(() {
@@ -219,10 +209,6 @@ class _TaskWidgetState extends State<TaskWidget> {
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Theme.of(context).primaryColor),
-            ),
             onPressed: () {
               if (_taskDescriptionController.text.isNotEmpty) {
                 if (_taskStepsController.text.isNotEmpty &&
@@ -245,8 +231,8 @@ class _TaskWidgetState extends State<TaskWidget> {
                         actions: <Widget>[
                           ElevatedButton(
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                  Theme.of(context).errorColor),
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.red),
                             ),
                             onPressed: () {
                               Navigator.pop(context);

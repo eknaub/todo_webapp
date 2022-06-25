@@ -43,8 +43,6 @@ class _NotesWidgetState extends State<NotesWidget> {
         Row(
           children: [
             ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).primaryColor),
               label: const Text(
                 "New note",
               ),
@@ -55,8 +53,6 @@ class _NotesWidgetState extends State<NotesWidget> {
               width: 16,
             ),
             ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).primaryColor),
               icon: const Icon(Icons.delete),
               label: const Text(
                 "Remove all notes",
@@ -97,7 +93,6 @@ class _NotesWidgetState extends State<NotesWidget> {
                       });
                     },
                     icon: const Icon(Icons.delete),
-                    color: whiteColor,
                   ),
                 ],
               ),
@@ -122,8 +117,7 @@ class _NotesWidgetState extends State<NotesWidget> {
           ),
           ElevatedButton(
             style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Theme.of(context).errorColor),
+              backgroundColor: MaterialStateProperty.all(Colors.red),
             ),
             onPressed: () {
               setState(() {
@@ -160,10 +154,6 @@ class _NotesWidgetState extends State<NotesWidget> {
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Theme.of(context).primaryColor),
-            ),
             onPressed: () {
               setState(() {
                 notesList.add(note: _noteController.text);

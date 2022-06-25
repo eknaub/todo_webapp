@@ -28,8 +28,8 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
       child: InkWell(
         onTap: () => {},
         hoverColor: Theme.of(context).primaryColor.withOpacity(0.4),
-        splashColor: transparentColor,
-        highlightColor: transparentColor,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         mouseCursor: MouseCursor.defer,
         child: Container(
           padding: const EdgeInsets.all(6.0),
@@ -37,7 +37,7 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
             border: Border.all(color: Theme.of(context).primaryColor),
             color: widget.task.getTaskProgress() == 1.0
                 ? Theme.of(context).primaryColor.withOpacity(0.4)
-                : transparentColor,
+                : Colors.transparent,
           ),
           child: Row(
             children: [
@@ -48,7 +48,6 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
                   },
                   icon: const Icon(
                     Icons.remove,
-                    color: whiteColor,
                   )),
               SizedBox(
                 width: 50,
@@ -63,7 +62,7 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
                       builder: (context, value, _) => CircularProgressIndicator(
                         value: value,
                         backgroundColor: Theme.of(context).primaryColor,
-                        color: greenColor,
+                        color: Colors.green,
                       ),
                     )),
                     Center(
@@ -85,7 +84,6 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
                   },
                   icon: const Icon(
                     Icons.add,
-                    color: whiteColor,
                   )),
               const SizedBox(width: 24),
               Text(
@@ -97,7 +95,7 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
               ),
               const Spacer(),
               IconButton(
-                icon: const Icon(Icons.delete, color: whiteColor),
+                icon: const Icon(Icons.delete),
                 onPressed: () => _removeActivityDialog(context),
               ),
             ],
@@ -120,8 +118,7 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
           ),
           ElevatedButton(
             style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Theme.of(context).errorColor),
+              backgroundColor: MaterialStateProperty.all(Colors.red),
             ),
             onPressed: () {
               widget.task.removeTask();

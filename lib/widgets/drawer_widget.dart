@@ -37,7 +37,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     activityIdx = Provider.of<SelectedActivity>(context);
     return Drawer(
       width: 250.0,
-      backgroundColor: Theme.of(context).primaryColor,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -48,7 +47,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   iconSize: 50.0,
                   icon: const Icon(
                     Icons.add,
-                    color: whiteColor,
                   ),
                   onPressed: () => _addActivityDialog(context),
                 ),
@@ -64,7 +62,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ],
           ),
           const Divider(
-            color: blackColor,
             indent: 16.0,
             endIndent: 16.0,
           ),
@@ -98,7 +95,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     onPressed: () => _removeActivityDialog(context, index),
                     icon: const Icon(
                       Icons.delete,
-                      color: whiteColor,
                     )),
                 tileColor: activityIdx.selectedActivityIdx == index
                     ? Theme.of(context).backgroundColor
@@ -112,7 +108,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             },
           ),
           const Divider(
-            color: blackColor,
             indent: 16.0,
             endIndent: 16.0,
           ),
@@ -166,8 +161,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           ElevatedButton(
             style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Theme.of(context).errorColor),
+              backgroundColor: MaterialStateProperty.all(Colors.red),
             ),
             onPressed: () {
               setState(() {
@@ -204,9 +198,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Theme.of(context).primaryColor)),
             onPressed: () {
               if (_activityController.text.isNotEmpty) {
                 if (activityList.contains(activity: _activityController.text)) {
@@ -219,8 +210,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       actions: <Widget>[
                         ElevatedButton(
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                Theme.of(context).errorColor),
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.red),
                           ),
                           onPressed: () {
                             Navigator.pop(context);
