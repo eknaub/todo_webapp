@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_webapp/model/selectedActivity.dart';
+import 'package:todo_webapp/model/selected_activity.dart';
 import 'package:todo_webapp/responsive.dart';
 import 'package:todo_webapp/widgets/drawer_widget.dart';
 import 'package:todo_webapp/widgets/notes_widget.dart';

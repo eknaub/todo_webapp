@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todo_webapp/constants/taskEnum.dart';
+import 'package:todo_webapp/constants/task_enum.dart';
 
 final sharedPrefs = Preferences.prefs;
 

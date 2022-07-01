@@ -1,4 +1,4 @@
-import 'package:todo_webapp/model/selectedActivity.dart';
+import 'package:todo_webapp/model/selected_activity.dart';
 import 'package:todo_webapp/sharedPrefs/prefs.dart';
 
 class Task {

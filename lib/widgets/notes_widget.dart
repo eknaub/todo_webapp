@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_webapp/model/noteList.dart';
+import 'package:todo_webapp/model/note_list.dart';
 
 class NotesWidget extends StatefulWidget {
   const NotesWidget({Key? key}) : super(key: key);
