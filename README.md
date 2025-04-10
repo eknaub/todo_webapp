@@ -2,12 +2,6 @@
 
 A simple dynamic To-do Web app, including a notes section, made with Flutter.
 
-<div align="center">
-    <a href="https://eduard-knaub.de">
-      www.eduard-knaub.de
-    </a>
-</div>
-
 ## 🔨 Technologies
 [![Flutter][flutter-shield]][flutter-url] [![Dart][dart-shield]][dart-url]
 
